@@ -6,10 +6,11 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  FlatList,
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Input,Button } from 'react-native-elements';
+import { Input,Button,Divider,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
 
@@ -17,55 +18,35 @@ export default class NewTabScreen extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      peopleContainers:[<PersonContainer key={0}/>]
+      people:[]
     }
   }
   static navigationOptions = {
     title: 'Start a new tab',
   };
-  addPerson(){
-    let pplcont = this.state.peopleContainers;
-    pplcont.push(<PersonContainer key={pplcont.length+1}/>)
+  addPerson(obj){
+    console.log('called parent func')
+    let ppl = this.state.people;
+    ppl.push(obj)
     this.setState({
-      peopleContainers:pplcont
-    })
-  }
-  removePerson(){
-    let pplcont = this.state.peopleContainers;
-    pplcont.splice(-1,1)
-    this.setState({
-      peopleContainers:pplcont
+      people:ppl
     })
   }
   render() {
-    console.log('render called');
-    console.log('length of state.people in render '+this.state.peopleContainers.length)
+    console.log(this.state.people)
     return(
       <View style={{backgroundColor: '#ef1580'}}>
         <ScrollView>
           <View>
-            {this.state.peopleContainers}
+            <PersonContainer handlePress={this.addPerson.bind(this)}/>
           </View>
-            <View style={{flexDirection:'row'}}>
-              <View style={{flex:1,justifyContent:'center'}}>
-                <Button titleStyle={{
-                    flex:1,
-                    color:'#fff'}}
-                    type="clear"
-                    title="Add new person"
-                    onPress={this.addPerson.bind(this)}>
-                </Button>
-              </View>
-              <View style={{flex:1,justifyContent:'center'}}>
-                <Button titleStyle={{
-                    flex:1,
-                    color:'#fff'}}
-                    type="clear"
-                    title="Remove person"
-                    onPress={this.removePerson.bind(this)}>
-                </Button>
-              </View>
+          <View>
+            <View style={styles.container}>
+              {
+                this.state.people.map((o,i)=><ListItem key={i} title={o.name} subtitle={o.amount}/>)
+              }
             </View>
+          </View>
         </ScrollView>
       </View>
     )
@@ -76,21 +57,28 @@ class PersonContainer extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      nameSelected:false,
-      startingAmountSelected:false
+      name:'',
+      amount:0
     }
   }
-  handleNameSelect(){
+  addP(){
+    console.log('Adding P');
+    console.log('name '+this.state.name);
+    console.log('amount '+this.state.amount);
+    let data = {'name':this.state.name,'amount':this.state.amount};
+    this.props.handlePress(data)
+  }
+  handleName(name){
     console.log('handle name called')
     this.setState({
-      nameSelected:true,
-      startingAmountSelected:false
+      name:name,
+      amount:this.state.amount
     })
   }
-  handleAmountSelect(){
+  handleAmount(amount){
     this.setState({
-      nameSelected:true,
-      startingAmountSelected:true
+      name:this.state.name,
+      amount:amount
     })
   }
   render(){
@@ -100,7 +88,7 @@ class PersonContainer extends React.Component {
         inputStyle={styles.inputStyle}
         key={0}
         placeholder='  Enter person name...'
-        onChange={this.handleNameSelect.bind(this)}
+        onChangeText={(text)=>this.handleName(text)}
         leftIcon={
           <Icon
             name='user'
@@ -115,7 +103,7 @@ class PersonContainer extends React.Component {
         inputStyle={styles.inputStyle}
         placeholder='  Enter amount...'
         key={1}
-        onChange={this.handleAmountSelect.bind(this)}
+        onChangeText={(text)=>this.handleAmount(text)}
         leftIcon={
           <Icon
             name='bitcoin'
@@ -125,19 +113,25 @@ class PersonContainer extends React.Component {
           />
         } />
     )
-    let saveButton = (
-        <Text key={2} style={{color:'#fff'}}>Person added!</Text>
+    let divider = (
+      <Divider key={2} style={{backgroundColor:'white'}} />
     )
-    if (!this.state.nameSelected){
-      ret = [nameSelect]
-    } else if (!this.state.startingAmountSelected) {
-      ret = [nameSelect,amountSelect]
-    } else {
-      ret = [nameSelect,amountSelect,saveButton]
-    }
+    ret = [nameSelect,amountSelect]
     return(
       <View style={styles.formView}>
+        {divider}
         {ret}
+        <View style={{flexDirection:'row'}}>
+          <View style={{flex:1,justifyContent:'center'}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="clear"
+                title="Add new person"
+                onPress={this.addP.bind(this)}>
+            </Button>
+          </View>
+        </View>
       </View>
     )
   }
@@ -150,5 +144,27 @@ const styles = StyleSheet.create({
   },
   inputStyle:{
     color:'#fff'
-  }
+  },
+  subtitleView: {
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingTop: 5
+  },
+  ratingImage: {
+    height: 19.21,
+    width: 100
+  },
+  ratingText: {
+    paddingLeft: 10,
+    color: 'grey'
+  },
+  container: {
+   flex: 1,
+   paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44,
+  },
 })
