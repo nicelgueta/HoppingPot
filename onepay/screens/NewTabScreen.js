@@ -18,41 +18,74 @@ export default class NewTabScreen extends React.Component {
   constructor(props){
     super(props)
     this.state = {
-      people:[]
+      people:[],
+      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>
     }
   }
   static navigationOptions = {
     title: 'Start a new tab',
   };
+  reset(){
+    this.setState({people:[],personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>});
+  }
   addPerson(obj){
     console.log('called parent func')
     let ppl = this.state.people;
     ppl.push(obj)
     this.setState({
-      people:ppl
+      people:ppl,
+      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>
     })
   }
   render() {
     console.log(this.state.people)
     return(
-      <View style={{backgroundColor: '#ef1580'}}>
-        <ScrollView>
-          <View>
-            <PersonContainer handlePress={this.addPerson.bind(this)}/>
+      <View style={{backgroundColor: '#ef1580',flex:1,flexDirection:'row'}}>
+        <ScrollView style={styles.container}>
+          <View style={{backgroundColor: '#ef1580'}}>
+            {this.state.personContainer}
           </View>
-          <View>
+          <View style={styles.container}>
             <View style={styles.container}>
               {
-                this.state.people.map((o,i)=><ListItem key={i} title={o.name} subtitle={o.amount}/>)
+                this.state.people.map((o,i)=><ListItem key={i} title={o.name} subtitle={'£'+o.amount}
+                containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
               }
             </View>
           </View>
         </ScrollView>
+        <View style={styles.tabBarInfoContainer}>
+          <View style={{flex:3,justifyContent:'center',height:50}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="clear"
+                title="Save"
+                >
+            </Button>
+          </View>
+          <View style={{flex:3,justifyContent:'center',height:50}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="clear"
+                title="Reset"
+                onPress={()=>this.reset()}>
+            </Button>
+          </View>
+        </View>
       </View>
     )
   }
 }
-
+const LEFTICON = (
+  <Icon
+    name='user'
+    color='white'
+    size={20}
+    shake={true}
+  />
+)
 class PersonContainer extends React.Component {
   constructor(props){
     super(props);
@@ -62,14 +95,14 @@ class PersonContainer extends React.Component {
     }
   }
   addP(){
-    console.log('Adding P');
     console.log('name '+this.state.name);
     console.log('amount '+this.state.amount);
     let data = {'name':this.state.name,'amount':this.state.amount};
+    this.nameInput.clear()
+    this.amountInput.clear()
     this.props.handlePress(data)
   }
   handleName(name){
-    console.log('handle name called')
     this.setState({
       name:name,
       amount:this.state.amount
@@ -87,6 +120,7 @@ class PersonContainer extends React.Component {
       <Input
         inputStyle={styles.inputStyle}
         key={0}
+        ref={input => { this.nameInput = input}}
         placeholder='  Enter person name...'
         onChangeText={(text)=>this.handleName(text)}
         leftIcon={
@@ -103,6 +137,7 @@ class PersonContainer extends React.Component {
         inputStyle={styles.inputStyle}
         placeholder='  Enter amount...'
         key={1}
+        ref={input => { this.amountInput = input}}
         onChangeText={(text)=>this.handleAmount(text)}
         leftIcon={
           <Icon
@@ -122,12 +157,12 @@ class PersonContainer extends React.Component {
         {divider}
         {ret}
         <View style={{flexDirection:'row'}}>
-          <View style={{flex:1,justifyContent:'center'}}>
+          <View style={{flex:1,justifyContent:'flex-start'}}>
             <Button titleStyle={{
                 flex:1,
                 color:'#fff'}}
                 type="clear"
-                title="Add new person"
+                title="Add +"
                 onPress={this.addP.bind(this)}>
             </Button>
           </View>
@@ -160,11 +195,40 @@ const styles = StyleSheet.create({
   },
   container: {
    flex: 1,
-   paddingTop: 22
+   paddingBottom: 22,
+   backgroundColor:'#fff'
   },
   item: {
     padding: 10,
-    fontSize: 18,
-    height: 44,
+    justifyContent:'center'
+  },
+  tabBarInfoContainer: {
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    ...Platform.select({
+      ios: {
+        shadowColor: 'black',
+        shadowOffset: { height: -3 },
+        shadowOpacity: 0.1,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 20,
+      },
+    }),
+    alignItems: 'center',
+    justifyContent:'center',
+    backgroundColor: '#ef1580',
+    paddingVertical: 20,
+    flexDirection:'row'
+  },
+  tabBarInfoText: {
+    fontSize: 50,
+    color: '#fff',
+    textAlign: 'center',
+    textAlignVertical:'bottom',
+    flex:1
   },
 })
