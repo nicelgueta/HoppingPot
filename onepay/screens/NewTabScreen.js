@@ -13,13 +13,15 @@ import { WebBrowser } from 'expo';
 import { Input,Button,Divider,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
+import Modal from '../components/overlay';
 
 export default class NewTabScreen extends React.Component {
   constructor(props){
     super(props)
     this.state = {
       people:[],
-      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>
+      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>,
+      modalBody:<Text>Saved!</Text>
     }
   }
   static navigationOptions = {
@@ -36,6 +38,9 @@ export default class NewTabScreen extends React.Component {
       people:ppl,
       personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>
     })
+  }
+  saveTab(){
+    this.modal.setState({isVisible:true})
   }
   render() {
     console.log(this.state.people)
@@ -61,6 +66,7 @@ export default class NewTabScreen extends React.Component {
                 color:'#fff'}}
                 type="clear"
                 title="Save"
+                onPress={()=>this.saveTab()}
                 >
             </Button>
           </View>
@@ -74,6 +80,7 @@ export default class NewTabScreen extends React.Component {
             </Button>
           </View>
         </View>
+        <Modal ref={input => { this.modal = input}} body={this.state.modalBody}/>
       </View>
     )
   }

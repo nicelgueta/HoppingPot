@@ -11,12 +11,22 @@ import {
 import { WebBrowser } from 'expo';
 import { Button } from 'react-native-elements';
 import { MonoText } from '../components/StyledText';
+import { fetchUser,setUserName } from "../state/actions/userActions"
+import { connect } from "react-redux"
 
+
+@connect((store) => {
+  return {
+    user: store.user.user,
+  };
+})
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
     header: null,
   };
-
+  changeName(){
+    this.props.dispatch(setUserName('Greg'))
+  }
   render() {
     const {navigate} = this.props.navigation
     return (
@@ -25,10 +35,18 @@ export default class HomeScreen extends React.Component {
           <View style={{height:100}}>
             <Text style={styles.tabBarInfoText}>OnePay</Text>
           </View>
-          <Image style={{flex:2}} source={require('../assets/images/re-ordering.gif')} />
+          <Text style={styles.tabBarInfoText}>{'Hi '+this.props.user.name+'!'}</Text>
         </ScrollView>
-
         <View style={styles.tabBarInfoContainer}>
+          <View style={{flex:1,justifyContent:'center'}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="clear"
+                title="Change name"
+                onPress={this.changeName.bind(this)}>
+            </Button>
+          </View>
           <View style={{flex:1,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
@@ -72,16 +90,6 @@ export default class HomeScreen extends React.Component {
       );
     }
   }
-
-  _handleLearnMorePress = () => {
-    WebBrowser.openBrowserAsync('https://docs.expo.io/versions/latest/guides/development-mode');
-  };
-
-  _handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/guides/up-and-running.html#can-t-see-your-changes'
-    );
-  };
 }
 
 const styles = StyleSheet.create({
