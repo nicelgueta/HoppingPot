@@ -12,18 +12,30 @@ import {
 import { WebBrowser } from 'expo';
 import { Input,Button,Divider,ListItem,Overlay } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import { connect } from "react-redux"
+import { clearModal } from '../state/actions/modalActions';
 
+@connect((store) => {
+  return {
+    user: store.user.user,
+    newTab:store.user.openTab,
+    modalBody:store.modal.modalBody,
+    isVisible:store.modal.isVisible,
+  };
+})
 export default class Modal extends React.Component{
   constructor(props){
     super(props);
-    this.state = {isVisible:false}
+  }
+  clearModal(){
+    this.props.dispatch(clearModal())
   }
   render(){
     return(
       <Overlay
-        isVisible={this.state.isVisible}
-        onBackdropPress={() => this.setState({ isVisible: false })}>
-        <View>{this.props.body}</View>
+        isVisible={this.props.isVisible}
+        onBackdropPress={this.clearModal.bind(this)}>
+        <View>{this.props.modalBody}</View>
       </Overlay>
 
     )

@@ -14,49 +14,38 @@ import { Input,Button,Divider,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
 import Modal from '../components/overlay';
+import { fetchUser,setUserName } from "../state/actions/userActions"
+import { connect } from "react-redux"
+import { enterModal } from '../state/actions/modalActions';
 
+@connect((store) => {
+  return {
+    user: store.user.user,
+    newTab:store.user.openTab,
+    modalBody:store.modal.modalBody
+  };
+})
 export default class NewTabScreen extends React.Component {
   constructor(props){
     super(props)
-    this.state = {
-      people:[],
-      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>,
-      modalBody:<Text>Saved!</Text>
-    }
   }
   static navigationOptions = {
     title: 'Start a new tab',
   };
-  reset(){
-    this.setState({people:[],personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>});
-  }
-  addPerson(obj){
-    console.log('called parent func')
-    let ppl = this.state.people;
-    ppl.push(obj)
-    this.setState({
-      people:ppl,
-      personContainer:<PersonContainer handlePress={this.addPerson.bind(this)}/>
-    })
-  }
-  saveTab(){
-    this.modal.setState({isVisible:true})
+  openModal(){
+    this.props.dispatch(enterModal())
   }
   render() {
-    console.log(this.state.people)
     return(
       <View style={{backgroundColor: '#ef1580',flex:1,flexDirection:'row'}}>
         <ScrollView style={styles.container}>
           <View style={{backgroundColor: '#ef1580'}}>
-            {this.state.personContainer}
+
           </View>
           <View style={styles.container}>
-            <View style={styles.container}>
-              {
-                this.state.people.map((o,i)=><ListItem key={i} title={o.name} subtitle={'£'+o.amount}
-                containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
-              }
-            </View>
+
+
+
           </View>
         </ScrollView>
         <View style={styles.tabBarInfoContainer}>
@@ -66,21 +55,14 @@ export default class NewTabScreen extends React.Component {
                 color:'#fff'}}
                 type="clear"
                 title="Save"
-                onPress={()=>this.saveTab()}
+                onPress={this.openModal.bind(this)}
                 >
             </Button>
           </View>
           <View style={{flex:3,justifyContent:'center',height:50}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="Reset"
-                onPress={()=>this.reset()}>
-            </Button>
           </View>
         </View>
-        <Modal ref={input => { this.modal = input}} body={this.state.modalBody}/>
+        <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </View>
     )
   }

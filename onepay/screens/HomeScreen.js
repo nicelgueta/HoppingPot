@@ -14,7 +14,6 @@ import { MonoText } from '../components/StyledText';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 
-
 @connect((store) => {
   return {
     user: store.user.user,
@@ -35,18 +34,9 @@ export default class HomeScreen extends React.Component {
           <View style={{height:100}}>
             <Text style={styles.tabBarInfoText}>OnePay</Text>
           </View>
-          <Text style={styles.tabBarInfoText}>{'Hi '+this.props.user.name+'!'}</Text>
+          <Image style={{flex:2}} source={require('../assets/images/re-ordering.gif')} />
         </ScrollView>
         <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:1,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="Change name"
-                onPress={this.changeName.bind(this)}>
-            </Button>
-          </View>
           <View style={{flex:1,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
