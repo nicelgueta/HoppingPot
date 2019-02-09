@@ -5,6 +5,7 @@ import AppNavigator from './navigation/AppNavigator';
 import { Provider } from "react-redux";
 import { store, persistor } from "./state/store";
 import { PersistGate } from 'redux-persist/lib/integration/react';
+import Modal from './components/overlay';
 
 export default class App extends React.Component {
   state = {
@@ -26,7 +27,9 @@ export default class App extends React.Component {
           {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <Provider store={store}>
             <PersistGate persistor={persistor}>
-              <AppNavigator />
+              <AppNavigator>
+                <Modal />
+              </AppNavigator>
             </PersistGate>
           </Provider>
         </View>

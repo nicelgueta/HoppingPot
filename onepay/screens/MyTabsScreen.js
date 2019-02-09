@@ -6,18 +6,20 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   FlatList,
   View,
+  Separator
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Input,Button,Divider,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
-import Modal from '../components/overlay';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { deleteTab,saveTab } from '../state/actions/tabActions';
+import Swipeout from 'react-native-swipeout';
 
 @connect((store) => {
   return {
@@ -34,21 +36,57 @@ export default class MyTabsScreen extends React.Component {
     title: 'My Tabs',
   };
   openModal(bodytype){
-    this.props.dispatch(enterModal())
+    console.log('no modal body set')
   }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
   }
+  renderRow(rowData,i) {
+    let swipeBtns = [{
+      text: 'Delete',
+      backgroundColor: '#ea5b80',
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => { this.deleteTab(rowData.tabId) }
+    },
+    {
+      text: 'Calculate',
+      backgroundColor: '#ae5aea',
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => { this.deleteTab(rowData.tabId) }
+    }];
+
+    return (
+      <Swipeout key={i} right={swipeBtns}
+        autoClose={true}
+        backgroundColor= 'transparent'>
+        <TouchableHighlight>
+          <View>
+            <ListItem title={rowData.tabName} subtitle={'placeholder'}
+            containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>
+            <Divider />
+          </View>
+        </TouchableHighlight>
+      </Swipeout>
+    )
+  }
   render() {
     const {navigate} = this.props.navigation
+    if (this.props.myTabs.length < 1){
+      var list = <View style={{alignSelf:'center'}} ><Text style={{color:'grey', fontSize:18,alignSelf:'center'}}> You have no tabs! </Text></View>
+    } else {
+      var list = this.props.myTabs.map((o,i)=>this.renderRow(o,i))
+    }
     return(
       <View style={{backgroundColor: '#fff',flex:1,flexDirection:'column'}}>
-        <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row'}}>
-          <View style={{flex:4,height:50, padding:10,bottom:0}}>
+        <ScrollView style={{paddingTop:25}}>
+          {list}
+        </ScrollView>
+        <View style={{alignSelf: 'flex-end',backgroundColor: '#fff',flex:1,flexDirection:'row',paddingBottom:25}}>
+          <View style={{flex:1,height:50, padding:10,bottom:0}}>
           </View>
-          <View style={{flex:5,height:50, padding:10,bottom:0}}>
+          <View style={{alignSelf: 'flex-end',flex:1,height:50, padding:10}}>
             <Button titleStyle={{
-                flex:2,
+                flex:1,
                 color:'#fff'}}
                 type="outline"
                 title="Add new tab"
@@ -58,35 +96,6 @@ export default class MyTabsScreen extends React.Component {
             </Button>
           </View>
         </View>
-        <ScrollView style={styles.container}>
-
-            {
-                this.props.myTabs.map((o,i)=><ListItem key={i} title={o.tabName}
-                containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
-              }
-
-        </ScrollView>
-        <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:3,justifyContent:'center',height:50}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="placeholder"
-                >
-            </Button>
-          </View>
-          <View style={{flex:3,justifyContent:'center',height:50}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="placeholder"
-                >
-            </Button>
-          </View>
-        </View>
-        <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </View>
     )
   }
@@ -122,8 +131,9 @@ const styles = StyleSheet.create({
     color: 'grey'
   },
   container: {
-   flex: 1,
    paddingBottom: 22,
+   paddingTop: 22,
+   top:0,
    backgroundColor:'#fff'
   },
   item: {
