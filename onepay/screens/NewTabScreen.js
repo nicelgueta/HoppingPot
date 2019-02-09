@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   View,
+  KeyboardAvoidingView
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Input,Button,Divider,ListItem } from 'react-native-elements';
@@ -57,7 +58,7 @@ export default class NewTabScreen extends React.Component {
   }
   render() {
     return(
-      <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:25}}>
+      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:25}}>
         <View style={{flex:0.1}} />
         <ScrollView style={{flex:1}}>
           <View style={{backgroundColor: '#fff'}}>
@@ -99,8 +100,8 @@ export default class NewTabScreen extends React.Component {
             </Button>
           </View>
         </View>
-        <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
-      </View>
+          <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
+      </KeyboardAvoidingView>
     )
   }
 };

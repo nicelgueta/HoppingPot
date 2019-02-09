@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Button } from 'react-native-elements';
+import { Button, Tile } from 'react-native-elements';
 import { MonoText } from '../components/StyledText';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
@@ -29,14 +29,17 @@ export default class HomeScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation
     return (
-      <View style={styles.container}>
-        <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-          <View style={{height:100}}>
-            <Text style={styles.tabBarInfoText}>OnePay</Text>
-          </View>
-          <Image style={{flex:2}} source={require('../assets/images/re-ordering.gif')} />
-        </ScrollView>
-      </View>
+
+        <Tile
+        containerStyle={{flex:1}}
+        imageSrc={require('../assets/images/main.png')}
+        imageContainerStyle={{flex:2,alignSelf:'stretch',height:'auto'}}
+        title="OnePay"
+        titleNumberOfLines={15}
+        featured
+        caption="Quick, relible payment splitter"
+        />
+
     );
   }
 
@@ -67,7 +70,8 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#ef1580'
+    backgroundColor: '#fff',
+    alignItems:'stretch'
   },
   contentContainer:{
     alignItems:'center'
