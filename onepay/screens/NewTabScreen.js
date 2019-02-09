@@ -135,14 +135,16 @@ class NewTabModalBody extends React.Component{
       <Input
         key={0}
         label="Name"
+        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
         placeholder='  Enter person name...'
         onChangeText={(text)=>this.props.dispatch(newNameToTab(text))}
-        inputContainerStyle={{backgroundColor:'#baa5ff',borderRadius:25,paddingTop:5}}
+        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
+        inputStyle={{color:'#825ff4'}}
         leftIcon={
           <Icon
             name='user'
-            color='white'
-            size={20}
+            color='#825ff4'
+            size={17}
             shake={true}
           />
         } />
@@ -150,15 +152,17 @@ class NewTabModalBody extends React.Component{
     let amountSelect = (
       <Input
         label="Amount"
+        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
         placeholder='  Enter amount...'
         onChangeText={(text)=>this.props.dispatch(newAmountToTab(text))}
-        inputContainerStyle={{backgroundColor:'#baa5ff',borderRadius:25,paddingTop:5}}
+        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
+        inputStyle={{color:'#825ff4'}}
         key={1}
         leftIcon={
           <Icon
             name='bitcoin'
-            color='white'
-            size={20}
+            color='#825ff4'
+            size={17}
             shake={true}
           />
         } />
@@ -166,29 +170,31 @@ class NewTabModalBody extends React.Component{
     return(
       <View style={{backgroundColor: '#825ff4'}}>
         <View>
-          <Text style={{fontSize:17}}>Add Person to tab</Text>
-          {nameSelect}
-          {amountSelect}
+          <Text style={{fontSize:20,color:'#fff'}}>Add Person to tab</Text>
+          <View style={{padding:10}}>{nameSelect}</View>
+          <View style={{padding:10}}>{amountSelect}</View>
         </View>
         <View style={styles.modalBarInfoContainer}>
-          <View style={{flex:4,height:50, padding:10,bottom:0}}>
+          <View style={{flex:1,height:50, padding:10,bottom:0}}>
             <Button titleStyle={{
                 flex:1,
                 color:'#fff'}}
                 type="outline"
                 title="Dismiss"
-                buttonStyle={{backgroundColor:'#825ff4',borderRadius:20}}
+                titleStyle={{color:'#825ff4'}}
+                buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                 onPress={()=>this.dismissModal()}
                 >
               </Button>
             </View>
-            <View style={{flex:4,height:50, padding:10,bottom:0}}>
+            <View style={{flex:1,height:50, padding:10,bottom:0}}>
               <Button titleStyle={{
                   flex:1,
                   color:'#fff'}}
                   type="outline"
                   title="Add"
-                  buttonStyle={{backgroundColor:'#825ff4',borderRadius:20}}
+                  titleStyle={{color:'#825ff4'}}
+                  buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                   onPress={()=>this.addPerson()}
                   >
               </Button>
@@ -261,10 +267,10 @@ const styles = StyleSheet.create({
     flexDirection:'row'
   },
   modalBarInfoContainer: {
-    alignItems: 'stretch',
-    backgroundColor: '#fff',
+    alignItems: 'center',
+    backgroundColor: '#825ff4',
     flexDirection:'row',
-    paddingTop: 25
+    paddingTop: 20
   },
   tabBarInfoText: {
     fontSize: 50,
