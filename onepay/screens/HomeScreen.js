@@ -36,24 +36,6 @@ export default class HomeScreen extends React.Component {
           </View>
           <Image style={{flex:2}} source={require('../assets/images/re-ordering.gif')} />
         </ScrollView>
-        <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:1,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="Start new tab"
-                onPress={()=>navigate('NewTab')}>
-            </Button>
-          </View>
-          <View style={{flex:1,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear" title="My tabs">
-            </Button>
-          </View>
-        </View>
       </View>
     );
   }
@@ -106,7 +88,7 @@ const styles = StyleSheet.create({
         elevation: 20,
       },
     }),
-    alignItems: 'center',
+    alignItems: 'stretch',
     justifyContent:'center',
     backgroundColor: '#ef1580',
     paddingVertical: 20,

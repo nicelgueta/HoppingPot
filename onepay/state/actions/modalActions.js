@@ -11,3 +11,10 @@ export function enterModal(){
     payload: true
   }
 }
+
+export function addModalBody(body){
+  return {
+    type: 'ADD_MODAL_BODY',
+    payload: body
+  }
+}

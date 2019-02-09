@@ -3,7 +3,7 @@ export default function reducer(state={
     user: {
       id: 123,
       name: 'Nick',
-      age: 25,
+      age: 27,
     },
     fetching: false,
     fetched: false,

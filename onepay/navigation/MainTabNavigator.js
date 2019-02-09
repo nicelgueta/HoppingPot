@@ -6,6 +6,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import MyTabsScreen from '../screens/MyTabsScreen';
 import NewTabScreen from '../screens/NewTabScreen';
 
 const HomeStack = createStackNavigator({
@@ -40,12 +41,13 @@ LinksStack.navigationOptions = {
   ),
 };
 
-const NewTabStack = createStackNavigator({
-  NewTab: NewTabScreen,
+const MyTabStack = createStackNavigator({
+  MyTabs: MyTabsScreen,
+  NewTab: NewTabScreen
 });
 
-NewTabStack.navigationOptions = {
-  tabBarLabel: 'New tab',
+MyTabStack.navigationOptions = {
+  tabBarLabel: 'My Tabs',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -53,6 +55,7 @@ NewTabStack.navigationOptions = {
     />
   ),
 };
+
 const SettingsStack = createStackNavigator({
   Settings: SettingsScreen,
 });
@@ -69,6 +72,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  NewTabStack,
+  MyTabStack,
   SettingsStack,
 });
