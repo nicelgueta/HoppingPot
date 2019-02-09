@@ -57,7 +57,7 @@ export default class NewTabScreen extends React.Component {
   }
   render() {
     return(
-      <View style={{backgroundColor: '#ef1580',flex:1,flexDirection:'row'}}>
+      <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row'}}>
         <ScrollView style={styles.container}>
           <View style={{backgroundColor: '#fff'}}>
             <Input
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent:'center',
-    backgroundColor: '#ef1580',
+    backgroundColor: '#825ff4',
     paddingVertical: 20,
     flexDirection:'row'
   },
