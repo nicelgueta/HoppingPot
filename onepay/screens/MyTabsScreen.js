@@ -54,14 +54,14 @@ export default class MyTabsScreen extends React.Component {
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
       onPress: () => { this.deleteTab(rowData.tabId) }
     }];
-
+    var subtitle = rowData.tabData.map(e=>e.name).join(', ')
     return (
       <Swipeout key={i} right={swipeBtns}
         autoClose={true}
         backgroundColor= 'transparent'>
         <TouchableHighlight>
           <View>
-            <ListItem title={rowData.tabName} subtitle={'placeholder'}
+            <ListItem title={rowData.tabName} subtitle={subtitle}
             containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>
             <Divider />
           </View>
