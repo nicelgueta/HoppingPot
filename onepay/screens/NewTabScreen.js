@@ -57,8 +57,9 @@ export default class NewTabScreen extends React.Component {
   }
   render() {
     return(
-      <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row'}}>
-        <ScrollView style={styles.container}>
+      <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:25}}>
+        <View style={{flex:0.1}} />
+        <ScrollView style={{flex:1}}>
           <View style={{backgroundColor: '#fff'}}>
             <Input
               key={0}
@@ -75,17 +76,8 @@ export default class NewTabScreen extends React.Component {
               }
           </View>
         </ScrollView>
+        <View style={{flex:0.1}} />
         <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:3,justifyContent:'center',height:50}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="Add +"
-                onPress={this.openModal.bind(this, 'add')}
-                >
-            </Button>
-          </View>
           <View style={{flex:3,justifyContent:'center',height:50}}>
             <Button titleStyle={{
                 flex:1,
@@ -96,12 +88,29 @@ export default class NewTabScreen extends React.Component {
                 >
             </Button>
           </View>
+          <View style={{flex:3,justifyContent:'center',height:50}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="clear"
+                title="Add +"
+                onPress={this.openModal.bind(this, 'add')}
+                >
+            </Button>
+          </View>
         </View>
         <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </View>
     )
   }
 };
+
+
+
+
+
+
+
 @connect((store) => {
   return {
     formName:store.tabs.formName,
@@ -155,7 +164,7 @@ class NewTabModalBody extends React.Component{
         } />
     )
     return(
-      <View>
+      <View style={{backgroundColor: '#825ff4'}}>
         <View>
           <Text style={{fontSize:17}}>Add Person to tab</Text>
           {nameSelect}
