@@ -51,7 +51,8 @@ export default class NewTabScreen extends React.Component {
     this.props.dispatch(nameTab(name))
   }
   saveTab(){
-    let tab = {tabId: this.props.myTabs.length+1,tabName: this.props.newTabName,tabData:this.props.newTab}
+    let tabId = new Date().getTime() //current time as int as the tab id
+    let tab = {tabId: tabId,tabName: this.props.newTabName,tabData:[], peopleInTab:this.props.newTab}
     this.props.dispatch(clearOpenTab())
     this.props.dispatch(saveTab(tab))
     this.props.navigation.navigate('MyTabs')
@@ -72,7 +73,7 @@ export default class NewTabScreen extends React.Component {
           </View>
           <View style={styles.container}>
             {
-                this.props.newTab.map((o,i)=><ListItem key={i} title={o.name} subtitle={'£'+o.amount}
+                this.props.newTab.map((o,i)=><ListItem key={i} title={o}
                 containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
               }
           </View>
@@ -120,7 +121,7 @@ export default class NewTabScreen extends React.Component {
 })
 class NewTabModalBody extends React.Component{
   addPerson(){
-    var person = {name: this.props.formName,amount: this.props.formAmount}
+    var person = this.props.formName
     this.props.dispatch(addToOpenTab(person))
     this.props.dispatch(clearModal())
   }
@@ -150,30 +151,11 @@ class NewTabModalBody extends React.Component{
           />
         } />
     )
-    let amountSelect = (
-      <Input
-        label="Amount"
-        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
-        placeholder='  Enter amount...'
-        onChangeText={(text)=>this.props.dispatch(newAmountToTab(text))}
-        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#561CB3'}}
-        key={1}
-        leftIcon={
-          <Icon
-            name='bitcoin'
-            color='#561CB3'
-            size={17}
-            shake={true}
-          />
-        } />
-    )
     return(
       <View style={{backgroundColor: '#561CB3'}}>
         <View>
           <Text style={{fontSize:20,color:'#fff'}}>Add Person to tab</Text>
           <View style={{padding:10}}>{nameSelect}</View>
-          <View style={{padding:10}}>{amountSelect}</View>
         </View>
         <View style={styles.modalBarInfoContainer}>
           <View style={{flex:1,height:50, padding:10,bottom:0}}>

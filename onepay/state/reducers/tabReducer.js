@@ -1,10 +1,29 @@
 
+const DEFAULT_TAB =
+  {
+   tabId:0,
+   tabName:"string",
+   peopleInTab:[
+     "string"
+   ],
+   tabData:[
+     {
+       name:"string",
+       paymentId:0,
+       description:"string",
+       amount:0.0,
+       currency:"string",
+       date:"string",
+       dateInt:0
+     }
+   ]
+  }
 export default function reducer(state={
     openTab: [],
     formName:null,
-    formAmount:null,
     newTabName:null,
-    myTabs:[]
+    myTabs:[],
+    tabSelected:DEFAULT_TAB
   }, action) {
 
     switch (action.type) {
@@ -20,9 +39,6 @@ export default function reducer(state={
       case 'NEW_NAME_TO_TAB':{
         return {...state,formName: action.payload}
       }
-      case 'NEW_AMOUNT_TO_TAB':{
-        return {...state,formAmount: action.payload}
-      }
       case 'SAVE_TAB':{
         return {...state,myTabs: state.myTabs.concat(action.payload)}
       }
@@ -32,6 +48,16 @@ export default function reducer(state={
       case 'NAME_TAB':{
         return {...state,newTabName: action.payload}
       }
+      case 'EDIT_TAB':{
+        let tabs = state.myTabs.filter(element => element.tabId !== action.payload.tabId) //remove the current tab ID from array
+        tabs.push(action.payload.tabObj) //add new version of the tab to array
+        return {...state,myTabs: tabs}
+      }
+      case 'SELECT_TAB':{
+        let tabSelected = state.myTabs.filter(obj=>{return obj.tabId===action.payload})[0]
+        return {...state,tabSelected: tabSelected}
+      }
+
     }
 
     return state

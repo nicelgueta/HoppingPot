@@ -18,7 +18,7 @@ import { MonoText } from '../components/StyledText';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
-import { deleteTab,saveTab } from '../state/actions/tabActions';
+import { deleteTab,saveTab,selectTab } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
 
 @connect((store) => {
@@ -41,20 +41,31 @@ export default class MyTabsScreen extends React.Component {
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
   }
+  selectTab(tabId){
+    this.props.dispatch(selectTab(tabId))
+    this.props.navigation.navigate('SelectedTab')
+  }
   renderRow(rowData,i) {
     let swipeBtns = [{
+      text: 'View',
+      backgroundColor: '#ae5aea',
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => { this.selectTab(rowData.tabId) }
+    },
+    {
       text: 'Delete',
       backgroundColor: '#ea5b80',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
       onPress: () => { this.deleteTab(rowData.tabId) }
     },
-    {
-      text: 'Calculate',
-      backgroundColor: '#ae5aea',
-      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress: () => { this.deleteTab(rowData.tabId) }
-    }];
-    var subtitle = rowData.tabData.map(e=>e.name).join(', ')
+    ];
+    var subtitle = rowData.peopleInTab.join(', ')
+    const sumArray = (accumulator, currentValue) => accumulator + currentValue;
+    try{
+      var total = rowData.tabData.map(o=>o.amount).reduce(sumArray)
+    } catch (TypeError) {
+      var total = 0.00
+    }
     return (
       <Swipeout key={i} right={swipeBtns}
         autoClose={true}
@@ -62,7 +73,8 @@ export default class MyTabsScreen extends React.Component {
         <TouchableHighlight>
           <View>
             <ListItem title={rowData.tabName} subtitle={subtitle}
-            containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>
+            containerStyle={styles.item} leftIcon={LEFTICON} rightIcon={<Text style={{paddingRight:20}}>{'£'+total}</Text>}
+            topDivider={true} bottomDivider={true} onPress={() => { this.selectTab(rowData.tabId) }}/>
             <Divider />
           </View>
         </TouchableHighlight>

@@ -8,6 +8,7 @@ import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import MyTabsScreen from '../screens/MyTabsScreen';
 import NewTabScreen from '../screens/NewTabScreen';
+import TabScreen from '../screens/TabScreen';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -44,7 +45,8 @@ LinksStack.navigationOptions = {
 
 const MyTabStack = createStackNavigator({
   MyTabs: MyTabsScreen,
-  NewTab: NewTabScreen
+  NewTab: NewTabScreen,
+  SelectedTab:TabScreen
 });
 
 MyTabStack.navigationOptions = {

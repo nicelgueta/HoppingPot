@@ -17,12 +17,6 @@ export function newNameToTab(item){
     payload: item
   }
 }
-export function newAmountToTab(item){
-  return {
-    type: 'NEW_AMOUNT_TO_TAB',
-    payload: item
-  }
-}
 export function clearOpenTab(){
   return {
     type: 'CLEAR_OPEN_TAB',
@@ -45,5 +39,17 @@ export function nameTab(tabName){
   return {
     type: 'NAME_TAB',
     payload: tabName
+  }
+}
+export function selectTab(tabId){
+  return {
+    type: 'SELECT_TAB',
+    payload: tabId
+  }
+}
+export function editTab(tabId,newTabObj){
+  return {
+    type: 'EDIT_TAB',
+    payload: {tabId: tabId,tabObj: newTabObj}
   }
 }
