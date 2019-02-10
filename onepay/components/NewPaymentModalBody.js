@@ -69,7 +69,7 @@ export default class NewPaymentModalBody extends React.Component{
       />
     )
     let pName = (
-      <ScrollView>
+      <ScrollView style={{height:150}}>
         {
           this.props.tabSelected.peopleInTab.map( (person,i) =>{
             if (person === this.props.paymentName){var color = '#4b9de5'} else {var color = '#fff'}

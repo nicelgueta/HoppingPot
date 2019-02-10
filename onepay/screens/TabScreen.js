@@ -19,9 +19,12 @@ import Modal from '../components/overlay';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
-import { editTab,deleteTab } from '../state/actions/tabActions';
+import { editTab,deleteTab,selectTab } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
 import NewPaymentModalBody from '../components/NewPaymentModalBody'
+
+const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
+
 
 @connect((store) => {
   return {
@@ -45,8 +48,12 @@ export default class TabScreen extends React.Component {
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
   }
-  removePayment(){
-
+  removePayment(paymentId){
+    let paymentArr = this.props.tabSelected.tabData
+    let newArr = paymentArr.filter(o=>o.paymentId!==paymentId)
+    let newTabObj = {...this.props.tabSelected,tabData: newArr}
+    this.props.dispatch(editTab(this.props.tabSelected.tabId,newTabObj))
+    this.props.dispatch(selectTab(this.props.tabSelected.tabId))
   }
   renderPayment(paymentObj,i) {
     let swipeBtns = [{
@@ -74,7 +81,7 @@ export default class TabScreen extends React.Component {
     )
   }
   renderPerson(personName,i) {
-    const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
+
     try{
       var totalPaid = this.props.tabSelected.tabData.map(o=>{if (o.name===personName){return o.amount}else{return 0}}).reduce(sumArray)
       if (!totalPaid){
@@ -95,6 +102,11 @@ export default class TabScreen extends React.Component {
     )
   }
   render() {
+    try{
+      var totalForTab = Math.round(this.props.tabSelected.tabData.map(o=>o.amount).reduce(sumArray)*100)/100
+    } catch (TypeError) {
+      var totalForTab = 0.00
+    }
     if (this.props.tabSelected.tabData.length < 1){
       var list = <View style={{alignSelf:'center',paddingTop:5}} ><Text style={{color:'grey', fontSize:14,alignSelf:'center'}}>No payments have been added to this tab!</Text></View>
     } else{
@@ -107,7 +119,7 @@ export default class TabScreen extends React.Component {
 
           <View style={{flex:1}}>
             <View style={{flex:0.05}}>
-              <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName}</Text>
+              <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName+'   |   £'+totalForTab}</Text>
             </View>
             <View style={{flex:0.10}} />
             <Divider />
