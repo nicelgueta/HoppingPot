@@ -21,7 +21,7 @@ import { connect } from "react-redux"
 })
 export default class HomeScreen extends React.Component {
   static navigationOptions = {
-    header: null,
+    header: null
   };
   changeName(){
     this.props.dispatch(setUserName('Greg'))
@@ -29,17 +29,35 @@ export default class HomeScreen extends React.Component {
   render() {
     const {navigate} = this.props.navigation
     return (
-
-        <Tile
-        containerStyle={{flex:1}}
-        imageSrc={require('../assets/images/main.png')}
-        imageContainerStyle={{flex:2,alignSelf:'stretch',height:'auto'}}
-        title="OnePay"
-        titleNumberOfLines={15}
-        featured
-        caption="Quick, relible payment splitter"
+      <View style={styles.container}>
+        <Image style={{
+                   flex: 1,
+                   alignSelf: 'stretch',
+                   width: undefined,
+                   height: undefined
+                 }}
+                 source={require('../assets/images/main2.png')}
         />
-
+      <View style={{flex:1,alignItems:'center',paddingTop:20}}>
+          <Text style={{color:'#fff',fontSize:18}}>The easy way to split pay</Text>
+        </View>
+        <View style={{flex:0.5,height:50, padding:10,bottom:0,flexDirection:'row'}}>
+          <View style={{flex:0.1}} />
+          <View style={{flex:1}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#fff'}}
+                type="outline"
+                title="Start..."
+                titleStyle={{color:'#561CB3'}}
+                buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
+                onPress={()=>navigate('MyTabs')}
+                >
+            </Button>
+          </View>
+          <View style={{flex:0.1}} />
+        </View>
+      </View>
     );
   }
 
@@ -70,8 +88,7 @@ export default class HomeScreen extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems:'stretch'
+    backgroundColor: '#561CB3',
   },
   contentContainer:{
     alignItems:'center'
@@ -94,7 +111,6 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'stretch',
     justifyContent:'center',
-    backgroundColor: '#ef1580',
     paddingVertical: 20,
     flexDirection:'row'
   },

@@ -90,7 +90,7 @@ export default class MyTabsScreen extends React.Component {
                 color:'#fff'}}
                 type="outline"
                 title="Add new tab"
-                buttonStyle={{backgroundColor:'#825ff4',borderRadius:20}}
+                buttonStyle={{backgroundColor:'#561CB3',borderRadius:20}}
                 onPress={()=>navigate('NewTab')}
                 >
             </Button>
@@ -158,7 +158,7 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent:'center',
-    backgroundColor: '#825ff4',
+    backgroundColor: '#561CB3',
     paddingVertical: 20,
     flexDirection:'row'
   },

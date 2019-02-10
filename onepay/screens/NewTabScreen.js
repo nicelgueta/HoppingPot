@@ -140,11 +140,11 @@ class NewTabModalBody extends React.Component{
         placeholder='  Enter person name...'
         onChangeText={(text)=>this.props.dispatch(newNameToTab(text))}
         inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#825ff4'}}
+        inputStyle={{color:'#561CB3'}}
         leftIcon={
           <Icon
             name='user'
-            color='#825ff4'
+            color='#561CB3'
             size={17}
             shake={true}
           />
@@ -157,19 +157,19 @@ class NewTabModalBody extends React.Component{
         placeholder='  Enter amount...'
         onChangeText={(text)=>this.props.dispatch(newAmountToTab(text))}
         inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#825ff4'}}
+        inputStyle={{color:'#561CB3'}}
         key={1}
         leftIcon={
           <Icon
             name='bitcoin'
-            color='#825ff4'
+            color='#561CB3'
             size={17}
             shake={true}
           />
         } />
     )
     return(
-      <View style={{backgroundColor: '#825ff4'}}>
+      <View style={{backgroundColor: '#561CB3'}}>
         <View>
           <Text style={{fontSize:20,color:'#fff'}}>Add Person to tab</Text>
           <View style={{padding:10}}>{nameSelect}</View>
@@ -182,7 +182,7 @@ class NewTabModalBody extends React.Component{
                 color:'#fff'}}
                 type="outline"
                 title="Dismiss"
-                titleStyle={{color:'#825ff4'}}
+                titleStyle={{color:'#561CB3'}}
                 buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                 onPress={()=>this.dismissModal()}
                 >
@@ -194,7 +194,7 @@ class NewTabModalBody extends React.Component{
                   color:'#fff'}}
                   type="outline"
                   title="Add"
-                  titleStyle={{color:'#825ff4'}}
+                  titleStyle={{color:'#561CB3'}}
                   buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                   onPress={()=>this.addPerson()}
                   >
@@ -263,13 +263,13 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent:'center',
-    backgroundColor: '#825ff4',
+    backgroundColor: '#561CB3',
     paddingVertical: 20,
     flexDirection:'row'
   },
   modalBarInfoContainer: {
     alignItems: 'center',
-    backgroundColor: '#825ff4',
+    backgroundColor: '#561CB3',
     flexDirection:'row',
     paddingTop: 20
   },

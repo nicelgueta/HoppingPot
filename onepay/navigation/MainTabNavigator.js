@@ -15,6 +15,7 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
+  tabBarVisible:false,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -70,8 +71,19 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+const BottomTabNavigatorConfig = {
+  tabBarOptions : {
+    style:{
+      borderTopColor:'#561CB3'
+    },
+    tabStyle:{
+      backgroundColor:'#561CB3',
+    },
+  }
+}
+
 export default createBottomTabNavigator({
   HomeStack,
   MyTabStack,
   SettingsStack,
-});
+},BottomTabNavigatorConfig);
