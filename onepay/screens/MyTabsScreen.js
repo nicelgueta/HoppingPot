@@ -50,6 +50,7 @@ export default class MyTabsScreen extends React.Component {
       text: 'Calculate',
       backgroundColor: '#4b9de5',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress:() => {this.props.dispatch(selectTab(rowData.tabId));this.props.navigation.navigate('Calc');}
     },
     {
       text: 'Delete',
