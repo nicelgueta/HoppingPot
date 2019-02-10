@@ -127,6 +127,35 @@ export default class TabScreen extends React.Component {
 
 
         <View style={{flex:0.05}} />
+        <View style={styles.tabBarInfoContainer}>
+          <View style={{flex:0.05}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#3ae0a6'}}
+                type="outline"
+                buttonStyle={{
+                  borderRadius:5,paddingLeft:10,borderColor:'#3ae0a6'
+                }}
+                title="Save Tab"
+                >
+            </Button>
+          </View>
+          <View style={{flex:0.1}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#4b9de5'}}
+                type="outline"
+                buttonStyle={{
+                  borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
+                }}
+                title="Add Payment"
+                >
+            </Button>
+          </View>
+          <View style={{flex:0.05}} />
+        </View>
         <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </KeyboardAvoidingView>
     )
@@ -191,7 +220,7 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent:'center',
-    backgroundColor: '#561CB3',
+    backgroundColor: '#fff',
     paddingVertical: 20,
     flexDirection:'row'
   },

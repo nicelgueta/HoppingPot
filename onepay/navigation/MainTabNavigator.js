@@ -76,10 +76,10 @@ SettingsStack.navigationOptions = {
 const BottomTabNavigatorConfig = {
   tabBarOptions : {
     style:{
-      borderTopColor:'#561CB3'
+      borderTopColor:'#fff'
     },
     tabStyle:{
-      backgroundColor:'#561CB3',
+      backgroundColor:'#fff',
     },
   }
 }

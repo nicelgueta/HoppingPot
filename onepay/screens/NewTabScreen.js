@@ -80,26 +80,35 @@ export default class NewTabScreen extends React.Component {
         </ScrollView>
         <View style={{flex:0.1}} />
         <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:3,justifyContent:'center',height:50}}>
+          <View style={{flex:0.05}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#fff'}}
-                type="clear"
+                color:'#3ae0a6'}}
+                type="outline"
+                buttonStyle={{
+                  borderRadius:5,paddingLeft:10,borderColor:'#3ae0a6'
+                }}
                 title="Save"
                 onPress={this.saveTab.bind(this)}
                 >
             </Button>
           </View>
-          <View style={{flex:3,justifyContent:'center',height:50}}>
+          <View style={{flex:0.1}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#fff'}}
-                type="clear"
-                title="Add +"
+                color:'#4b9de5'}}
+                type="outline"
+                buttonStyle={{
+                  borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
+                }}
+                title="Add Person"
                 onPress={this.openModal.bind(this, 'add')}
                 >
             </Button>
           </View>
+          <View style={{flex:0.05}} />
         </View>
           <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </KeyboardAvoidingView>
@@ -161,10 +170,9 @@ class NewTabModalBody extends React.Component{
           <View style={{flex:1,height:50, padding:10,bottom:0}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#fff'}}
+                color:'#561CB3'}}
                 type="outline"
                 title="Dismiss"
-                titleStyle={{color:'#561CB3'}}
                 buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                 onPress={()=>this.dismissModal()}
                 >
@@ -173,10 +181,9 @@ class NewTabModalBody extends React.Component{
             <View style={{flex:1,height:50, padding:10,bottom:0}}>
               <Button titleStyle={{
                   flex:1,
-                  color:'#fff'}}
+                  color:'#561CB3'}}
                   type="outline"
                   title="Add"
-                  titleStyle={{color:'#561CB3'}}
                   buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
                   onPress={()=>this.addPerson()}
                   >
@@ -245,7 +252,7 @@ const styles = StyleSheet.create({
     }),
     alignItems: 'center',
     justifyContent:'center',
-    backgroundColor: '#561CB3',
+    backgroundColor: '#fff',
     paddingVertical: 20,
     flexDirection:'row'
   },
