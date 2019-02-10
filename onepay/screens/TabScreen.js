@@ -100,26 +100,27 @@ export default class TabScreen extends React.Component {
         <View style={{flex:0.05}} />
 
         <View style={{flex:1}}>
-          <View style={{backgroundColor:'red',flex:0.125}}>
+          <View style={{flex:0.05}}>
             <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName}</Text>
           </View>
+          <View style={{flex:0.10}} />
           <Divider />
-          <View style={{backgroundColor:'green',flex:0.5}}>
-            <View style={{backgroundColor:'yellow',flex:0.25}}>
-              <Text style={{fontSize:22,color:'#561CB3'}}>People in tab</Text>
+          <View style={{flex:0.5}}>
+            <View style={{flex:0.25}}>
+              <Text style={{fontSize:20,color:'#4b9de5'}}>People in tab</Text>
             </View>
-            <ScrollView style={{backgroundColor:'cyan',flex:1}}>
+            <ScrollView style={{flex:1}}>
               {
                 this.props.tabSelected.peopleInTab.map((n,i)=>this.renderPerson(n,i))
               }
             </ScrollView>
           </View>
           <Divider />
-          <View style={{backgroundColor:'blue',flex:1}}>
-            <View style={{backgroundColor:'yellow',flex:0.125}}>
-              <Text style={{fontSize:24,color:'#561CB3'}}>Payments</Text>
+          <View style={{flex:1}}>
+            <View style={{flex:0.125,paddingTop:5}}>
+              <Text style={{fontSize:20,color:'#4b9de5'}}>Payments</Text>
             </View>
-            <ScrollView style={{backgroundColor:'cyan',flex:1}}>
+            <ScrollView style={{flex:1}}>
               {list}
             </ScrollView>
           </View>
