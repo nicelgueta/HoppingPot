@@ -47,10 +47,9 @@ export default class MyTabsScreen extends React.Component {
   }
   renderRow(rowData,i) {
     let swipeBtns = [{
-      text: 'View',
-      backgroundColor: '#ae5aea',
+      text: 'Calculate',
+      backgroundColor: '#4b9de5',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress: () => { this.selectTab(rowData.tabId) }
     },
     {
       text: 'Delete',
@@ -59,8 +58,8 @@ export default class MyTabsScreen extends React.Component {
       onPress: () => { this.deleteTab(rowData.tabId) }
     },
     ];
-    var subtitle = rowData.peopleInTab.join(', ')
-    const sumArray = (accumulator, currentValue) => accumulator + currentValue;
+    var subtitle = 'fucked'//rowData.peopleInTab.join(', ')
+    const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
     try{
       var total = rowData.tabData.map(o=>o.amount).reduce(sumArray)
     } catch (TypeError) {

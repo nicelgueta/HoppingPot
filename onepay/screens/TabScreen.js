@@ -21,7 +21,7 @@ import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { editTab,deleteTab } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
-
+import NewPaymentModalBody from '../components/NewPaymentModalBody'
 
 @connect((store) => {
   return {
@@ -38,8 +38,9 @@ export default class TabScreen extends React.Component {
   static navigationOptions = {
     title: 'View Tab',
   };
-  openModal(bodytype){
-
+  openModal(){
+    this.props.dispatch(addModalBody(<NewPaymentModalBody />))
+    this.props.dispatch(enterModal())
   }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
@@ -55,6 +56,7 @@ export default class TabScreen extends React.Component {
       onPress: () => { this.removePayment(paymentObj.paymentId) }
     },
   ];
+
     var subtitle = (paymentObj.name + ' | ' + paymentObj.date)
     return (
       <Swipeout key={i} right={swipeBtns}
@@ -72,9 +74,12 @@ export default class TabScreen extends React.Component {
     )
   }
   renderPerson(personName,i) {
-    const sumArray = (accumulator, currentValue) => accumulator + currentValue;
+    const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
     try{
-      var totalPaid = this.props.tabSelected.tabData.map((o,i)=>{o.name===personName?o.amount:0}).reduce(sumArray)
+      var totalPaid = this.props.tabSelected.tabData.map(o=>{if (o.name===personName){return o.amount}else{return 0}}).reduce(sumArray)
+      if (!totalPaid){
+        totalPaid=0.00
+      }
     } catch (TypeError) {
       var totalPaid = 0.00
     }
@@ -96,38 +101,40 @@ export default class TabScreen extends React.Component {
       var list = this.props.tabSelected.tabData.map((o,i)=>this.renderPayment(o,i))
     }
     return(
-      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:10}}>
-        <View style={{flex:0.05}} />
+      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1}}>
+        <View style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:10}}>
+          <View style={{flex:0.05}} />
 
-        <View style={{flex:1}}>
-          <View style={{flex:0.05}}>
-            <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName}</Text>
-          </View>
-          <View style={{flex:0.10}} />
-          <Divider />
-          <View style={{flex:0.5}}>
-            <View style={{flex:0.25}}>
-              <Text style={{fontSize:20,color:'#4b9de5'}}>People in tab</Text>
-            </View>
-            <ScrollView style={{flex:1}}>
-              {
-                this.props.tabSelected.peopleInTab.map((n,i)=>this.renderPerson(n,i))
-              }
-            </ScrollView>
-          </View>
-          <Divider />
           <View style={{flex:1}}>
-            <View style={{flex:0.125,paddingTop:5}}>
-              <Text style={{fontSize:20,color:'#4b9de5'}}>Payments</Text>
+            <View style={{flex:0.05}}>
+              <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName}</Text>
             </View>
-            <ScrollView style={{flex:1}}>
-              {list}
-            </ScrollView>
+            <View style={{flex:0.10}} />
+            <Divider />
+            <View style={{flex:0.5}}>
+              <View style={{flex:0.25}}>
+                <Text style={{fontSize:20,color:'#4b9de5'}}>People in tab</Text>
+              </View>
+              <ScrollView style={{flex:1}}>
+                {
+                  this.props.tabSelected.peopleInTab.map((n,i)=>this.renderPerson(n,i))
+                }
+              </ScrollView>
+            </View>
+            <Divider />
+            <View style={{flex:1}}>
+              <View style={{flex:0.125,paddingTop:5}}>
+                <Text style={{fontSize:20,color:'#4b9de5'}}>Payments</Text>
+              </View>
+              <ScrollView style={{flex:1}}>
+                {list}
+              </ScrollView>
+            </View>
           </View>
+
+
+          <View style={{flex:0.05}} />
         </View>
-
-
-        <View style={{flex:0.05}} />
         <View style={styles.tabBarInfoContainer}>
           <View style={{flex:0.05}} />
           <View style={{flex:0.5,justifyContent:'center'}}>
@@ -138,7 +145,8 @@ export default class TabScreen extends React.Component {
                 buttonStyle={{
                   borderRadius:5,paddingLeft:10,borderColor:'#3ae0a6'
                 }}
-                title="Save Tab"
+                title="Save"
+                onPress={()=>this.props.navigation.navigate('MyTabs')}
                 >
             </Button>
           </View>
@@ -152,6 +160,7 @@ export default class TabScreen extends React.Component {
                   borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
                 }}
                 title="Add Payment"
+                onPress={this.openModal.bind(this)}
                 >
             </Button>
           </View>
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   tabBarInfoContainer: {
-    position: 'absolute',
+    flex:0.1,
     bottom: 0,
     left: 0,
     right: 0,
@@ -222,7 +231,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent:'center',
     backgroundColor: '#fff',
-    paddingVertical: 20,
+    paddingVertical: 10,
     flexDirection:'row'
   },
   modalBarInfoContainer: {

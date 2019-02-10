@@ -13,7 +13,6 @@
       "amount":0.0,
       "currency":"string",
       "date":"string",
-      "dateInt":0
     }
   ]
  }

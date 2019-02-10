@@ -21,6 +21,9 @@ const DEFAULT_TAB =
 export default function reducer(state={
     openTab: [],
     formName:null,
+    formPaymentAmount:0,
+    formPaymentDescription:'',
+    formPaymentName:'',
     newTabName:null,
     myTabs:[],
     tabSelected:DEFAULT_TAB
@@ -57,7 +60,18 @@ export default function reducer(state={
         let tabSelected = state.myTabs.filter(obj=>{return obj.tabId===action.payload})[0]
         return {...state,tabSelected: tabSelected}
       }
-
+      case 'ADD_PAYMENT_NAME':{
+        return {...state,formPaymentName: action.payload}
+      }
+      case 'ADD_PAYMENT_AMOUNT':{
+        return {...state,formPaymentAmount: action.payload}
+      }
+      case 'ADD_PAYMENT_DESCRIPTION':{
+        return {...state,formPaymentDescription: action.payload}
+      }
+      case 'CLEAR_PAYMENT':{
+        return {...state,formPaymentDescription: '', formPaymentAmount:0,formPaymentName:''}
+      }
     }
 
     return state

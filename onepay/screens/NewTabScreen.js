@@ -27,7 +27,6 @@ import { removeFromOpenTab,addToOpenTab,newNameToTab,newAmountToTab, nameTab, cl
     newTab:store.tabs.openTab,
     newTabName:store.tabs.newTabName,
     formName:store.tabs.formName,
-    formAmount:store.tabs.formAmount,
     modalBody:store.modal.modalBody,
     myTabs: store.tabs.myTabs
   };
@@ -125,7 +124,6 @@ export default class NewTabScreen extends React.Component {
 @connect((store) => {
   return {
     formName:store.tabs.formName,
-    formAmount:store.tabs.formAmount,
   };
 })
 class NewTabModalBody extends React.Component{
@@ -235,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   tabBarInfoContainer: {
-    position: 'absolute',
+    position:'absolute',
     bottom: 0,
     left: 0,
     right: 0,
@@ -253,7 +251,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent:'center',
     backgroundColor: '#fff',
-    paddingVertical: 20,
+    paddingVertical: 10,
     flexDirection:'row'
   },
   modalBarInfoContainer: {

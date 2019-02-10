@@ -53,3 +53,26 @@ export function editTab(tabId,newTabObj){
     payload: {tabId: tabId,tabObj: newTabObj}
   }
 }
+export function addPaymentName(name){
+  return {
+    type: 'ADD_PAYMENT_NAME',
+    payload: name
+  }
+}
+export function addPaymentAmount(amount){
+  return {
+    type: 'ADD_PAYMENT_AMOUNT',
+    payload: amount
+  }
+}
+export function addPaymentDescription(desc){
+  return {
+    type: 'ADD_PAYMENT_DESCRIPTION',
+    payload: desc
+  }
+}
+export function clearPayment(){
+  return {
+    type: 'CLEAR_PAYMENT'
+  }
+}
