@@ -37,7 +37,7 @@ export default function reducer(state={
         return {...state,openTab: state.openTab.filter(element => element !== action.payload)}
       }
       case 'CLEAR_OPEN_TAB':{
-        return {...state,openTab: action.payload, newTabName:null}
+        return {...state,openTab: action.payload, newTabName:null,formName:null,formAmount:0}
       }
       case 'NEW_NAME_TO_TAB':{
         return {...state,formName: action.payload}
@@ -70,7 +70,7 @@ export default function reducer(state={
         return {...state,formPaymentDescription: action.payload}
       }
       case 'CLEAR_PAYMENT':{
-        return {...state,formPaymentDescription: '', formPaymentAmount:0,formPaymentName:''}
+        return {...state,formPaymentDescription: '', formPaymentAmount:0,formPaymentName:null}
       }
     }
 

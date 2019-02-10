@@ -6,6 +6,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  TouchableHighlight,
   FlatList,
   View,
   KeyboardAvoidingView
@@ -48,7 +49,7 @@ export default class NewPaymentModalBody extends React.Component{
       currency:'GBP',
       date:dateStr
     }
-    let newArray = this.props.paymentArray.concat(payment)
+    let newArray = [payment].concat(this.props.paymentArray)
     let newTabObj = {...this.props.tabSelected,tabData: newArray}
     this.props.dispatch(editTab(this.props.tabId,newTabObj))
     this.props.dispatch(clearPayment())
@@ -60,66 +61,79 @@ export default class NewPaymentModalBody extends React.Component{
       <Input
         key={0}
         label="Description"
-        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
-        placeholder='  Enter payment description'
+        labelStyle={{color:'#4b9de5',paddingBottom:7}}
+        placeholder='Enter payment description'
         onChangeText={(text)=>this.props.dispatch(addPaymentDescription(text))}
-        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#561CB3'}}
+        inputContainerStyle={{backgroundColor:'#fff',borderRadius:5,paddingTop:10,borderColor:'#4b9de5',borderWidth:0.2,justifyContent:'center'}}
+        inputStyle={{color:'#4b9de5',fontSize:14,paddingLeft:10,alignSelf:'center'}}
       />
     )
     let pName = (
-      <Input
-        key={0}
-        label="Name"
-        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
-        placeholder='  Enter person who paid'
-        onChangeText={(text)=>this.props.dispatch(addPaymentName(text))}
-        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#561CB3'}}
-      />
+      <ScrollView>
+        {
+          this.props.tabSelected.peopleInTab.map( (person,i) =>{
+            if (person === this.props.paymentName){var color = '#4b9de5'} else {var color = '#fff'}
+            return (<TouchableHighlight key={i} >
+                      <View>
+                        <ListItem title={person} onPress={()=>this.props.dispatch(addPaymentName(person))}
+                        containerStyle={{padding:5,backgroundColor:color}}
+                        leftIcon={LEFTICON}
+                        topDivider={true} bottomDivider={true}/>
+                      </View>
+                    </TouchableHighlight>
+          )})
+        }
+      </ScrollView>
     )
     let pAmount = (
       <Input
         key={0}
         label="Amount"
-        labelStyle={{color:'#fff',alignSelf:'center',paddingBottom:7}}
-        placeholder='  Enter amount paid'
-        onChangeText={(text)=>this.props.dispatch(addPaymentAmount(Math.floor(parseFloat(text) * 100) / 100))}
-        inputContainerStyle={{backgroundColor:'#fff',borderRadius:25,paddingTop:10,alignSelf:'center'}}
-        inputStyle={{color:'#561CB3'}}
+        labelStyle={{color:'#4b9de5',paddingBottom:7}}
+        placeholder='Enter amount paid'
+        onChangeText={(text)=>this.props.dispatch(addPaymentAmount(Math.round(parseFloat(text) * 100) / 100))}
+        inputContainerStyle={{backgroundColor:'#fff',borderRadius:5,paddingTop:10,borderColor:'#4b9de5',borderWidth:0.2,justifyContent:'center'}}
+        inputStyle={{color:'#4b9de5',fontSize:14,paddingLeft:10,alignSelf:'center'}}
       />
     )
     return(
-      <View style={{backgroundColor: '#561CB3'}}>
+      <View style={{backgroundColor: '#fff'}}>
         <View>
-          <Text style={{fontSize:20,color:'#fff'}}>Add Person to tab</Text>
+          <Text style={{fontSize:20,color:'#4b9de5'}}>Add payment to tab</Text>
           <View style={{padding:10}}>{pName}</View>
           <View style={{padding:10}}>{pDesc}</View>
           <View style={{padding:10}}>{pAmount}</View>
         </View>
         <View style={styles.modalBarInfoContainer}>
-          <View style={{flex:1,height:50, padding:10,bottom:0}}>
+          <View style={{flex:0.05}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#561CB3'}}
+                color:'#4b9de5'}}
                 type="outline"
-                title="Dismiss"
-                buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
+                buttonStyle={{
+                  borderRadius:5,paddingLeft:10,borderColor:'#4b9de5'
+                }}
+                title="Cancel"
                 onPress={()=>this.dismissModal()}
                 >
-              </Button>
-            </View>
-            <View style={{flex:1,height:50, padding:10,bottom:0}}>
-              <Button titleStyle={{
-                  flex:1,
-                  color:'#561CB3'}}
-                  type="outline"
-                  title="Add"
-                  buttonStyle={{backgroundColor:'#fff',borderRadius:20}}
-                  onPress={()=>this.addPayment()}
-                  >
-              </Button>
-            </View>
+            </Button>
+          </View>
+          <View style={{flex:0.1}} />
+          <View style={{flex:0.5,justifyContent:'center'}}>
+            <Button titleStyle={{
+                flex:1,
+                color:'#3ae0a6'}}
+                type="outline"
+                buttonStyle={{
+                  borderRadius:5,paddingRight:10,borderColor:'#3ae0a6'
+                }}
+                title="Save"
+                onPress={this.addPayment.bind(this)}
+                >
+            </Button>
+          </View>
+          <View style={{flex:0.05}} />
         </View>
       </View>
     )
@@ -128,7 +142,7 @@ export default class NewPaymentModalBody extends React.Component{
 const LEFTICON = (
   <Icon
     name='user'
-    color='white'
+    color='#3ae0a6'
     size={20}
     shake={true}
   />
@@ -189,7 +203,7 @@ const styles = StyleSheet.create({
   },
   modalBarInfoContainer: {
     alignItems: 'center',
-    backgroundColor: '#561CB3',
+    backgroundColor: '#fff',
     flexDirection:'row',
     paddingTop: 20
   },

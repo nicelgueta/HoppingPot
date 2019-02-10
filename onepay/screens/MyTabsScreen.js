@@ -58,7 +58,7 @@ export default class MyTabsScreen extends React.Component {
       onPress: () => { this.deleteTab(rowData.tabId) }
     },
     ];
-    var subtitle = 'fucked'//rowData.peopleInTab.join(', ')
+    var subtitle = rowData.peopleInTab.join(', ')
     const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
     try{
       var total = rowData.tabData.map(o=>o.amount).reduce(sumArray)

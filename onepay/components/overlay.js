@@ -35,7 +35,7 @@ export default class Modal extends React.Component{
       <Overlay
         isVisible={this.props.isVisible}
         onBackdropPress={this.clearModal.bind(this)}
-        overlayStyle={{borderRadius:25,backgroundColor:'#561CB3'}}
+        overlayStyle={{borderRadius:10,backgroundColor:'#fff'}}
         >
         <View>{this.props.modalBody}</View>
       </Overlay>

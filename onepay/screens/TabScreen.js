@@ -65,7 +65,7 @@ export default class TabScreen extends React.Component {
         <TouchableHighlight>
           <View>
             <ListItem title={paymentObj.description} subtitle={subtitle}
-            containerStyle={styles.item} leftIcon={LEFTICON} rightIcon={<Text style={{paddingRight:20}}>{paymentObj.amount + paymentObj.currency}</Text>}
+            containerStyle={styles.item} leftIcon={LEFTICON} rightIcon={<Text style={{paddingRight:20}}>{paymentObj.amount +' '+ paymentObj.currency}</Text>}
             topDivider={true} bottomDivider={true}/>
             <Divider />
           </View>
@@ -87,7 +87,7 @@ export default class TabScreen extends React.Component {
         <TouchableHighlight key={i}>
           <View>
             <ListItem title={personName}
-            containerStyle={styles.item} leftIcon={LEFTICON} rightIcon={<Text style={{paddingRight:20}}>{'£'+totalPaid}</Text>}
+            containerStyle={styles.item} leftIcon={LEFTICON} rightIcon={<Text style={{paddingRight:20}}>{'£'+Math.round(totalPaid*100)/100}</Text>}
             topDivider={true} bottomDivider={true}/>
             <Divider />
           </View>

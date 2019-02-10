@@ -87,5 +87,4 @@ const BottomTabNavigatorConfig = {
 export default createBottomTabNavigator({
   HomeStack,
   MyTabStack,
-  SettingsStack,
 },BottomTabNavigatorConfig);
