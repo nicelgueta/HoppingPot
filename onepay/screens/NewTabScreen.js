@@ -11,7 +11,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Input,Button,Divider,ListItem } from 'react-native-elements';
+import { Button,Divider,ListItem } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
 import Modal from '../components/overlay';
@@ -19,6 +19,7 @@ import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { removeFromOpenTab,addToOpenTab,newNameToTab,newAmountToTab, nameTab, clearOpenTab, saveTab } from '../state/actions/tabActions';
+import {Form, Item, Input, Label} from 'native-base';
 
 
 @connect((store) => {
@@ -58,21 +59,20 @@ export default class NewTabScreen extends React.Component {
   }
   render() {
     return(
-      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:25}}>
+      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:15}}>
         <View style={{flex:0.1}} />
         <ScrollView style={{flex:1}}>
           <View style={{backgroundColor: '#fff'}}>
-            <Input
-              key={0}
-              label="Tab Name"
-              placeholder='Enter tab name...'
-              onChangeText={(text)=>this.nameTab(text)}
-              inputContainerStyle={{paddingTop:5}}
-            />
+            <Form>
+              <Item floatingLabel>
+                <Label style={{color:'#aa99c4'}}>Enter tab name</Label>
+                <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)}/>
+              </Item>
+            </Form>
           </View>
           <View style={styles.container}>
             {
-                this.props.newTab.map((o,i)=><ListItem key={i} title={o}
+                this.props.newTab.map((o,i)=><ListItem key={i} title={o} titleStyle={{color:'#4b9de5'}}
                 containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
               }
           </View>
@@ -141,21 +141,18 @@ class NewTabModalBody extends React.Component{
   }
   render(){
     let nameSelect = (
-      <Input
-        key={0}
-        label="Name"
-        labelStyle={{color:'#4b9de5',paddingBottom:7}}
-        placeholder='Enter person name'
-        onChangeText={(text)=>this.props.dispatch(newNameToTab(text))}
-        inputContainerStyle={{backgroundColor:'#fff',borderRadius:5,paddingTop:10,borderColor:'#4b9de5',borderWidth:0.2,justifyContent:'center'}}
-        inputStyle={{color:'#4b9de5',fontSize:14,paddingLeft:10,alignSelf:'center'}}
-      />
+      <Form style={{padding:20}}>
+        <Item stackedLabel>
+          <Label style={{color:'#4b9de5'}}>Enter person name</Label>
+          <Input style={{color:'#4b9de5'}} onChangeText={(text)=>this.props.dispatch(newNameToTab(text))}/>
+        </Item>
+      </Form>
     )
     return(
       <View style={{backgroundColor: '#fff'}}>
         <View>
           <Text style={{fontSize:20,color:'#4b9de5'}}>Add Person to tab</Text>
-          <View style={{padding:10}}>{nameSelect}</View>
+          <View>{nameSelect}</View>
         </View>
         <View style={styles.modalBarInfoContainer}>
           <View style={{flex:0.05}} />
@@ -226,6 +223,7 @@ const styles = StyleSheet.create({
   container: {
    flex: 1,
    paddingBottom: 22,
+   paddingTop:20,
    backgroundColor:'#fff'
   },
   item: {
