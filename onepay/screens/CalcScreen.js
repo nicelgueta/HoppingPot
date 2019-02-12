@@ -13,17 +13,20 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 import { WebBrowser } from 'expo';
-import { Input,Button,Divider,ListItem } from 'react-native-elements';
+import { Input,Button,Divider } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
 import Modal from '../components/overlay';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
-import { callCalcApi,setCalcResponse,setCalcError } from '../state/actions/calcActions';
 import Swipeout from 'react-native-swipeout';
-import NewPaymentModalBody from '../components/NewPaymentModalBody'
+import { Container, Header,Footer, FooterTab,List, ListItem, Left, Right, Content } from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+import NewPaymentModalBody from '../components/NewPaymentModalBody';
+import { setCalcResponse } from '../state/actions/calcActions';
 
 const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
+
 
 
 @connect((store) => {
@@ -41,6 +44,9 @@ export default class CalcScreen extends React.Component {
   constructor(props){
     super(props)
   }
+  componentWillUnmount(){
+    this.props.dispatch(setCalcResponse(null));
+  }
   static navigationOptions = {
     title: 'Tab Split',
   };
@@ -50,10 +56,10 @@ export default class CalcScreen extends React.Component {
   }
   renderCalcSpinner(){
     return(
-      <View style={{alignSelf:'center',justifyContent:'center',paddingTop:200}}>
-        <ActivityIndicator size="large" color="#561CB3" />
-        <Text style={{color:"#561CB3"}}>Calculating..</Text>
-      </View>
+      <Col size={1} style={{alignSelf:'center',alignItems:'center',justifyContent:'center',paddingTop:200}}>
+        <Row><ActivityIndicator size="large" color="#561CB3" /></Row>
+        <Row><Text style={{color:"#561CB3",paddingTop:5}}>Calculating..</Text></Row>
+      </Col>
     )
   }
   renderPaymentRow(paymentObj,i){
@@ -70,9 +76,9 @@ export default class CalcScreen extends React.Component {
         backgroundColor= 'transparent'>
         <TouchableHighlight>
           <View>
-            <ListItem title={paymentObj.name+' pays '+paymentObj.payee+' £'+paymentObj.amount}
-            containerStyle={styles.item} leftIcon={LEFTICON}
-            topDivider={true} bottomDivider={true} onPress={() => { this.selectTab(rowData.tabId) }}/>
+            <ListItem>
+              <Text>{paymentObj.name+' pays '+paymentObj.payee+' £'+paymentObj.amount}</Text>
+            </ListItem>
             <Divider />
           </View>
         </TouchableHighlight>
@@ -80,63 +86,51 @@ export default class CalcScreen extends React.Component {
     )
   }
   renderCalcMain(){
-    let apiResponse = [{name: "Edgar", payee:"me",amount: 73.33},{name: "Josh", payee:"me",amount: 12.33},{name: "Noah", payee:"Edgar",amount: 73.33}]//this.props.calcApiResponse.json();
+    let apiResponse = this.props.calcApiResponse;
     let list = (
-      <View>
-        {
-          apiResponse.map((o,i)=>this.renderPaymentRow(o,i))
-        }
-      </View>
+      <Content>
+        <ScrollView>
+          <List>
+            <ListItem itemHeader first>
+              <Text style={{fontSize:20, color:'#4b9de5'}}>Final Payments</Text>
+            </ListItem>
+            {
+              apiResponse.map((o,i)=>this.renderPaymentRow(o,i))
+            }
+          </List>
+        </ScrollView>
+      </Content>
     )
     return(list)
   }
+  renderApiError(){
+    return <Text>API ERROR</Text>
+  }
   render() {
-    var ret = this.renderCalcMain()//this.renderCalcSpinner()
+    if (this.props.calcApiCalling && !this.props.calcApiResponse){
+      var ret = this.renderCalcSpinner()
+    } else if (this.props.calcApiResponse){
+      var ret = this.renderCalcMain()//this.renderCalcSpinner()
+    } else if (this.props.calcApiError){
+      var ret = this.renderApiError()
+    }
     return(
-      <KeyboardAvoidingView style={{flex:1}}>
-        <View style={{backgroundColor: 'blue',flex:1,flexDirection:'row',paddingTop:10}}>
-          <View style={{backgroundColor: 'red',flex:0.05}} />
+      <Container>
+          <Grid>
+            <Col size={5} />
 
-          {/* MAIN SCREEN AREA */}
-          <View style={{backgroundColor: 'cyan',flex:1}}>
-            {ret}
-          </View>
-          {/* END MAIN SCREEN AREA */}
 
-          <View style={{backgroundColor: 'green',flex:0.05}} />
-        </View>
-        <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:0.05}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#4b9de5'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingLeft:10,borderColor:'#4b9de5'
-                }}
-                title="Back"
-                onPress={()=>this.props.navigation.navigate('MyTabs')}
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.1}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#4b9de5'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
-                }}
-                title="placeholder"
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.05}} />
-        </View>
-        <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
-      </KeyboardAvoidingView>
+            <Col size={90} >
+              <Col>
+                {ret}
+              </Col>
+              <Row />
+            </Col>
+
+
+            <Col size={5} />
+          </Grid>
+      </Container>
     )
   }
 };

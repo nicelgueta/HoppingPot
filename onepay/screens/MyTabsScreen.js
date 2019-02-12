@@ -20,12 +20,18 @@ import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { deleteTab,saveTab,selectTab } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
+import { postRequest } from '../components/callApi';
+import { callCalcApi,setCalcResponse,setCalcError } from '../state/actions/calcActions';
+
+const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
+const axios = require('axios');
 
 @connect((store) => {
   return {
     user: store.user.user,
     myTabs: store.tabs.myTabs,
-    modalBody:store.modal.modalBody
+    modalBody:store.modal.modalBody,
+    tabSelected:store.tabs.tabSelected
   };
 })
 export default class MyTabsScreen extends React.Component {
@@ -45,12 +51,55 @@ export default class MyTabsScreen extends React.Component {
     this.props.dispatch(selectTab(tabId))
     this.props.navigation.navigate('SelectedTab')
   }
+  getTotalPaidAmount(person,tabData){
+    return tabData.map(o=>{if (o.name===person){return o.amount}else{return 0}}).reduce(sumArray);
+  }
+  getCalc(){
+    console.log('does get here?')
+    let url = 'https://payonesplit.herokuapp.com/calc';
+    let postData = {};
+    for (let i=0; i < this.props.tabSelected.peopleInTab.length;i++){
+      console.log('LOGGING i');
+      let person = this.props.tabSelected.peopleInTab[i];
+      let amount = this.getTotalPaidAmount(person,this.props.tabSelected.tabData)
+      postData[person] = amount;
+    }
+
+    console.log('POSTDATA: '+JSON.stringify(postData))
+
+    let responseHandleFunc = (response) => {
+      this.props.dispatch(setCalcResponse(response.data))
+    }
+    let errorHandleFunc = (e) => {
+      this.props.dispatch(setCalcError(e))
+    }
+    this.props.dispatch(callCalcApi()) //calling api
+    console.log('calling API')
+    axios.post(url,postData)
+      .then(function (response) {
+        // handle success
+        responseHandleFunc(response)
+      })
+      .catch(function (error) {
+        // handle error
+        errorHandleFunc(error)
+      });
+  }
+  calc(tabId){
+    console.log('this.calc called')
+    this.props.dispatch(selectTab(tabId));
+    console.log('tab selected')
+    this.props.navigation.navigate('Calc');
+    console.log('navigated')
+    this.getCalc()
+    console.log('will it ever get here?');
+  }
   renderRow(rowData,i) {
     let swipeBtns = [{
       text: 'Calculate',
       backgroundColor: '#4b9de5',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress:() => {this.props.dispatch(selectTab(rowData.tabId));this.props.navigation.navigate('Calc');}
+      onPress:() => {this.calc(rowData.tabId) }
     },
     {
       text: 'Delete',
