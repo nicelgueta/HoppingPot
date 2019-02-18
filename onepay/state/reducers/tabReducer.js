@@ -31,7 +31,7 @@ export default function reducer(state={
 
     switch (action.type) {
       case "ADD_TO_OPEN_TAB": {
-        return {...state, openTab: state.openTab.concat(action.payload)}
+        return {...state, openTab: state.openTab.concat(action.payload), formName:null}
       }
       case 'REMOVE_FROM_OPEN_TAB':{
         return {...state,openTab: state.openTab.filter(element => element !== action.payload)}

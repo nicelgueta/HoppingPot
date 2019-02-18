@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   View,
+  TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
 import { WebBrowser } from 'expo';
@@ -19,8 +20,9 @@ import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { removeFromOpenTab,addToOpenTab,newNameToTab,newAmountToTab, nameTab, clearOpenTab, saveTab } from '../state/actions/tabActions';
-import {Form, Item, Input, Label} from 'native-base';
-
+import {Form, Item, Input, Label, Content, Container, Left, Right, Body, Switch} from 'native-base';
+import { Col, Row, Grid } from 'react-native-easy-grid';
+import Swipeout from 'react-native-swipeout';
 
 @connect((store) => {
   return {
@@ -39,156 +41,115 @@ export default class NewTabScreen extends React.Component {
   static navigationOptions = {
     title: 'Start a new tab',
   };
-  openModal(bodytype){
-    this.props.dispatch(enterModal())
-    if (bodytype==='add'){
-      this.props.dispatch(addModalBody(<NewTabModalBody/>))
-    } else {
-
-    }
-  }
   nameTab(name){
     this.props.dispatch(nameTab(name))
+  }
+  handleName(name){
+    this.props.dispatch(newNameToTab(name))
+  }
+  postName(name){
+    var person = this.props.formName
+    this.props.dispatch(addToOpenTab(person))
   }
   saveTab(){
     let tabId = new Date().getTime() //current time as int as the tab id
     let tab = {tabId: tabId,tabName: this.props.newTabName,tabData:[], peopleInTab:this.props.newTab}
     this.props.dispatch(clearOpenTab())
     this.props.dispatch(saveTab(tab))
-    this.props.navigation.navigate('MyTabs')
-  }
-  render() {
-    return(
-      <KeyboardAvoidingView style={{backgroundColor: '#fff',flex:1,flexDirection:'row',paddingTop:15}}>
-        <View style={{flex:0.1}} />
-        <ScrollView style={{flex:1}}>
-          <View style={{backgroundColor: '#fff'}}>
-            <Form>
-              <Item floatingLabel>
-                <Label style={{color:'#aa99c4'}}>Enter tab name</Label>
-                <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)}/>
-              </Item>
-            </Form>
-          </View>
-          <View style={styles.container}>
-            {
-                this.props.newTab.map((o,i)=><ListItem key={i} title={o} titleStyle={{color:'#4b9de5'}}
-                containerStyle={styles.item} leftIcon={LEFTICON} topDivider={true} bottomDivider={true}/>)
-              }
-          </View>
-        </ScrollView>
-        <View style={{flex:0.1}} />
-        <View style={styles.tabBarInfoContainer}>
-          <View style={{flex:0.05}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#3ae0a6'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingLeft:10,borderColor:'#3ae0a6'
-                }}
-                title="Save"
-                onPress={this.saveTab.bind(this)}
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.1}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#4b9de5'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
-                }}
-                title="Add Person"
-                onPress={this.openModal.bind(this, 'add')}
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.05}} />
-        </View>
-          <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
-      </KeyboardAvoidingView>
-    )
-  }
-};
-
-
-
-
-
-
-
-@connect((store) => {
-  return {
-    formName:store.tabs.formName,
-  };
-})
-class NewTabModalBody extends React.Component{
-  addPerson(){
-    var person = this.props.formName
-    this.props.dispatch(addToOpenTab(person))
-    this.props.dispatch(clearModal())
+    this.props.navigation.navigate('Home')
   }
   removePerson(person){
     this.props.dispatch(removeFromOpenTab(person))
   }
-  dismissModal(){
-    console.log('dismissed')
-    this.props.dispatch(clearModal())
-  }
-  render(){
-    let nameSelect = (
-      <Form style={{padding:20}}>
-        <Item stackedLabel>
-          <Label style={{color:'#4b9de5'}}>Enter person name</Label>
-          <Input style={{color:'#4b9de5'}} onChangeText={(text)=>this.props.dispatch(newNameToTab(text))}/>
-        </Item>
-      </Form>
-    )
-    return(
-      <View style={{backgroundColor: '#fff'}}>
+  renderListItem(name,i){
+    let swipeBtns = [{
+      text: 'Delete',
+      backgroundColor: '#ea5b80',
+      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+      onPress: () => { this.removePerson(name) }
+      },
+    ]
+    return(<Swipeout key={i} right={swipeBtns}
+      autoClose={true}
+      backgroundColor= 'transparent'>
+      <TouchableHighlight>
         <View>
-          <Text style={{fontSize:20,color:'#4b9de5'}}>Add Person to tab</Text>
-          <View>{nameSelect}</View>
+          <ListItem title={name} titleStyle={{color:'#8f79b2'}} containerStyle={styles.container}
+          topDivider={true} bottomDivider={true}/>
+          <Divider />
         </View>
-        <View style={styles.modalBarInfoContainer}>
-          <View style={{flex:0.05}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#4b9de5'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingLeft:10,borderColor:'#4b9de5'
-                }}
-                title="Cancel"
-                onPress={()=>this.dismissModal()}
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.1}} />
-          <View style={{flex:0.5,justifyContent:'center'}}>
-            <Button titleStyle={{
-                flex:1,
-                color:'#3ae0a6'}}
-                type="outline"
-                buttonStyle={{
-                  borderRadius:5,paddingRight:10,borderColor:'#3ae0a6'
-                }}
-                title="Save"
-                onPress={this.addPerson.bind(this)}
-                >
-            </Button>
-          </View>
-          <View style={{flex:0.05}} />
-        </View>
-      </View>
+      </TouchableHighlight>
+    </Swipeout>)
+  }
+  renderList(){
+      let listItems = this.props.newTab.map((name,i)=>{return(this.renderListItem(name,i))})
+      let text = (<Item key={1}>
+                    <Input placeholder='Start typing a name...' onChangeText={(text)=>this.handleName(text)}
+                      onBlur={(text)=>this.postName(text)}  value={this.props.formName} placeholderTextColor={'#aa99c4'}
+                      style={{color:'#aa99c4'}}/>
+                  </Item>)
+      if (!this.props.newTabName || this.props.newTabName.length === 0){
+        var renderArr = [null]
+      } else {
+        var renderArr = [listItems,text]
+      }
+      return(
+        <Col>
+          {renderArr}
+        </Col>
+      )
+  }
+  render() {
+    return(
+      <Container>
+        <Grid>
+          <Row size={1/6}>
+            <Col size={1/12}/>
+            <Col size={10/12}>
+              <Form>
+                <Item floatingLabel>
+                  <Label style={{color:'#aa99c4'}}>Enter tab name</Label>
+                  <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)}/>
+                </Item>
+              </Form>
+            </Col>
+            <Col size={1/12}/>
+            <Divider />
+          </Row>
+          <Row size={4/6}>
+            <Col size={1/12}/>
+            <Col size={10/12}>
+              <ScrollView>
+                {this.renderList()}
+              </ScrollView>
+            </Col>
+            <Col size={1/12}/>
+        </Row>
+          <Col size={1/6}/>
+          <Row size={1/6}>
+            <Col size={1/20}/>
+            <Col>
+              <Col size={3/10}/>
+              <Button titleStyle={{
+                  flex:1,
+                  color:'#fff'}}
+                  type="solid"
+                  buttonStyle={{
+                    borderRadius:5,padding:20,borderColor:'#3ae0a6', alignSelf:'center', backgroundColor:'#3ae0a6'
+                  }}
+                  title="Save"
+                  onPress={this.saveTab.bind(this)}
+                  >
+              </Button>
+            </Col>
+            <Col size={1/20}/>
+          </Row>
+        </Grid>
+      </Container>
     )
   }
-}
+};
+
 const LEFTICON = (
   <Icon
     name='user'
@@ -231,10 +192,6 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   tabBarInfoContainer: {
-    position:'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
     ...Platform.select({
       ios: {
         shadowColor: 'black',
@@ -247,10 +204,10 @@ const styles = StyleSheet.create({
       },
     }),
     alignItems: 'center',
+    alignSelf:'flex-end',
     justifyContent:'center',
     backgroundColor: '#fff',
-    paddingVertical: 10,
-    flexDirection:'row'
+    paddingVertical: 10
   },
   modalBarInfoContainer: {
     alignItems: 'center',

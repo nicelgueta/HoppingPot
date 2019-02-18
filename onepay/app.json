@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "OnePay",
-    "slug": "onepay",
+    "name": "DivvyUp",
+    "slug": "divvyup",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [
@@ -24,6 +24,9 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.divvy.DivvyUp"
     }
   }
 }
