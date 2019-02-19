@@ -90,7 +90,7 @@ export default class NewPaymentScreen extends React.Component{
     }
   }
   render(){
-    var Acheck = this.props.formErrorAmount ? 'close-circle' : ''
+    var Acheck = this.props.formErrorAmount ? 'close-circle' : 'logo-euro'
     var AcheckCol = this.props.formErrorAmount ? 'red' : '#4b9de5'
     var pAmount = (
       <Item
@@ -103,7 +103,6 @@ export default class NewPaymentScreen extends React.Component{
         <Icon name={Acheck} style={{color:AcheckCol}}/>
       </Item>
     )
-    var Dcheck = this.props.formErrorDesc ? 'close-circle' : ''
     var DcheckCol = this.props.formErrorDesc ? 'red' : '#4b9de5'
     var pDesc = (
       <Item
@@ -113,7 +112,7 @@ export default class NewPaymentScreen extends React.Component{
         >
         <Input placeholder='Enter payment description'
           onChangeText={(text)=>this.handleDescriptionChange(text)}/>
-        <Icon name={Dcheck} style={{color:DcheckCol}}/>
+        <Icon style={{color:DcheckCol}}/>
       </Item>
     )
     var selectedVal = this.props.paymentName.length > 0 ? this.props.paymentName : null
