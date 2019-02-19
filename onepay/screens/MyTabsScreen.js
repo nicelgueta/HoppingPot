@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   FlatList,
   View,
+  Alert,
   Separator
 } from 'react-native';
 import { WebBrowser } from 'expo';
@@ -54,14 +55,14 @@ export default class MyTabsScreen extends React.Component {
   getTotalPaidAmount(person,tabData){
     return tabData.map(o=>{if (o.name===person){return o.amount}else{return 0}}).reduce(sumArray);
   }
-  getCalc(){
-    console.log('does get here?')
+  getCalc(tabId){
     let url = 'https://payonesplit.herokuapp.com/calc';
+    let tab = this.props.myTabs.filter(o=>o.tabId===tabId)[0];
     let postData = {};
-    for (let i=0; i < this.props.tabSelected.peopleInTab.length;i++){
+    for (let i=0; i < tab.peopleInTab.length;i++){
       console.log('LOGGING i');
-      let person = this.props.tabSelected.peopleInTab[i];
-      let amount = this.getTotalPaidAmount(person,this.props.tabSelected.tabData)
+      let person = tab.peopleInTab[i];
+      let amount = this.getTotalPaidAmount(person,tab.tabData)
       postData[person] = amount;
     }
 
@@ -85,13 +86,41 @@ export default class MyTabsScreen extends React.Component {
         errorHandleFunc(error)
       });
   }
+  validCalc(tabId){
+    console.log('valdaiting tab '+tabId)
+    let tab = this.props.myTabs.filter(o=>o.tabId===tabId)[0];
+    if (tab.tabData.length === 0){
+      var tabAmount = 0;
+    } else {
+      var tabAmount = tab.tabData.map(o=>o.amount).reduce(sumArray);
+    }
+    if (tabAmount > 0){return true} else {return false};
+  }
+  sureDelete(tabName,tabId){
+    Alert.alert(
+      'Delete tab '+tabName+'?',
+      'Are you sure you want to delete this tab?',
+      [
+        {
+          text: 'Cancel',
+          onPress: () => console.log('Cancelled'),
+          style: 'cancel',
+        },
+        {text: 'Yes', onPress: () => this.deleteTab(tabId)},
+      ],
+      {cancelable: false},
+    );
+  }
   calc(tabId){
     console.log('this.calc called')
+    if (!this.validCalc(tabId)){
+      return (Alert.alert("Hold up there!","You can't calculate an empty tab! Try adding a payment first."))
+    }
     this.props.dispatch(selectTab(tabId));
     console.log('tab selected')
     this.props.navigation.navigate('Calc');
     console.log('navigated')
-    this.getCalc()
+    this.getCalc(tabId)
     console.log('will it ever get here?');
   }
   renderRow(rowData,i) {
@@ -105,7 +134,7 @@ export default class MyTabsScreen extends React.Component {
       text: 'Delete',
       backgroundColor: '#ea5b80',
       underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress: () => { this.deleteTab(rowData.tabId) }
+      onPress: () => { this.sureDelete(rowData.tabName,rowData.tabId) }
     },
     ];
     var subtitle = rowData.peopleInTab.join(', ')
