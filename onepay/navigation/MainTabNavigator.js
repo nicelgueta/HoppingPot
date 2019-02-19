@@ -9,12 +9,14 @@ import MyTabsScreen from '../screens/MyTabsScreen';
 import NewTabScreen from '../screens/NewTabScreen';
 import TabScreen from '../screens/TabScreen';
 import CalcScreen from '../screens/CalcScreen';
+import NewPaymentScreen from '../screens/NewPaymentScreen';
 
 const HomeStack = createStackNavigator({
   Home: MyTabsScreen,
   NewTab: NewTabScreen,
   SelectedTab:TabScreen,
-  Calc:CalcScreen
+  Calc:CalcScreen,
+  NewPayment:NewPaymentScreen
 });
 
 HomeStack.navigationOptions = {

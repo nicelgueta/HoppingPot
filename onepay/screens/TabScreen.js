@@ -21,7 +21,6 @@ import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { editTab,deleteTab,selectTab } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
-import NewPaymentModalBody from '../components/NewPaymentModalBody'
 
 const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
 
@@ -41,10 +40,6 @@ export default class TabScreen extends React.Component {
   static navigationOptions = {
     title: 'View Tab',
   };
-  openModal(){
-    this.props.dispatch(addModalBody(<NewPaymentModalBody />))
-    this.props.dispatch(enterModal())
-  }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
   }
@@ -152,13 +147,13 @@ export default class TabScreen extends React.Component {
           <View style={{flex:0.5,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#3ae0a6'}}
-                type="outline"
+                color:'#fff'}}
+                type="solid"
                 buttonStyle={{
-                  borderRadius:5,paddingLeft:10,borderColor:'#3ae0a6'
+                  borderRadius:5,borderColor:'#3ae0a6', alignSelf:'center', backgroundColor:'#3ae0a6'
                 }}
                 title="Save"
-                onPress={()=>this.props.navigation.navigate('MyTabs')}
+                onPress={()=>this.props.navigation.navigate('Home')}
                 >
             </Button>
           </View>
@@ -166,19 +161,18 @@ export default class TabScreen extends React.Component {
           <View style={{flex:0.5,justifyContent:'center'}}>
             <Button titleStyle={{
                 flex:1,
-                color:'#4b9de5'}}
-                type="outline"
+                color:'#fff'}}
+                type="solid"
                 buttonStyle={{
-                  borderRadius:5,paddingRight:10,borderColor:'#4b9de5'
+                  borderRadius:5,borderColor:'#4b9de5', alignSelf:'center', backgroundColor:'#4b9de5'
                 }}
                 title="Add Payment"
-                onPress={this.openModal.bind(this)}
+                onPress={()=>this.props.navigation.navigate('NewPayment')}
                 >
             </Button>
           </View>
           <View style={{flex:0.05}} />
         </View>
-        <Modal ref={input => { this.modal = input}} body={this.props.modalBody}/>
       </KeyboardAvoidingView>
     )
   }

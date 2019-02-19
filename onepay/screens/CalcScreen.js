@@ -22,7 +22,6 @@ import { connect } from "react-redux"
 import Swipeout from 'react-native-swipeout';
 import { Container, Header,Footer, FooterTab,List, ListItem, Left, Right, Content } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
-import NewPaymentModalBody from '../components/NewPaymentModalBody';
 import { setCalcResponse } from '../state/actions/calcActions';
 
 const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};

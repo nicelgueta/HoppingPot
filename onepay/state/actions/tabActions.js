@@ -76,3 +76,9 @@ export function clearPayment(){
     type: 'CLEAR_PAYMENT'
   }
 }
+export function setFormError(status){
+  return {
+    type: 'SET_FORM_ERROR',
+    payload: status
+  }
+}

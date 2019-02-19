@@ -20,6 +20,8 @@ const DEFAULT_TAB =
   }
 export default function reducer(state={
     openTab: [],
+    formErrorAmount:false,
+    formErrorDesc:false,
     formName:null,
     formPaymentAmount:0,
     formPaymentDescription:'',
@@ -70,7 +72,11 @@ export default function reducer(state={
         return {...state,formPaymentDescription: action.payload}
       }
       case 'CLEAR_PAYMENT':{
-        return {...state,formPaymentDescription: '', formPaymentAmount:0,formPaymentName:null}
+        return {...state,formPaymentDescription: '', formPaymentAmount:0,formPaymentName:'',formErrorAmount:false,formErrorDesc:false}
+      }
+      case 'SET_FORM_ERROR':{
+        let errorObj = action.payload
+        return {...state,...action.payload}
       }
     }
 
