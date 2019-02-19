@@ -41,6 +41,13 @@ export default class MyTabsScreen extends React.Component {
   }
   static navigationOptions = {
     title: 'My Tabs',
+    headerStyle: {
+      backgroundColor: '#561CB3',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
   openModal(bodytype){
     console.log('no modal body set')
@@ -118,14 +125,11 @@ export default class MyTabsScreen extends React.Component {
   calc(tabId){
     console.log('this.calc called')
     if (!this.validCalc(tabId)){
-      return (Alert.alert("Hold up there!","You can't calculate an empty tab! Try adding a payment first."))
+      return (Alert.alert("Oi oi Saveloy!","You can't calculate an empty tab! Try adding a payment first, then press the magic button.."))
     }
     this.props.dispatch(selectTab(tabId));
-    console.log('tab selected')
     this.props.navigation.navigate('Calc');
-    console.log('navigated')
     this.getCalc(tabId)
-    console.log('will it ever get here?');
   }
   renderRow(rowData,i) {
     let swipeBtns = [{

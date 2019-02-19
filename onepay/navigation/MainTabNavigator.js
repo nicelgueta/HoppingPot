@@ -10,6 +10,7 @@ import NewTabScreen from '../screens/NewTabScreen';
 import TabScreen from '../screens/TabScreen';
 import CalcScreen from '../screens/CalcScreen';
 import NewPaymentScreen from '../screens/NewPaymentScreen';
+import AboutScreen from '../screens/AboutScreen';
 
 const HomeStack = createStackNavigator({
   Home: MyTabsScreen,
@@ -21,7 +22,7 @@ const HomeStack = createStackNavigator({
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'My Tabs',
-  tabBarVisible:false,
+  tabBarVisible:true,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -34,12 +35,12 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: LinksScreen,
+const AboutStack = createStackNavigator({
+  About: AboutScreen,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'History',
+AboutStack.navigationOptions = {
+  tabBarLabel: 'About the app..',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -75,4 +76,5 @@ const BottomTabNavigatorConfig = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  AboutStack,
 },BottomTabNavigatorConfig);

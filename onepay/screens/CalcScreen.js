@@ -14,13 +14,12 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Input,Button,Divider } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import { MonoText } from '../components/StyledText';
 import Modal from '../components/overlay';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import Swipeout from 'react-native-swipeout';
-import { Container, Header,Footer, FooterTab,List, ListItem, Left, Right, Content } from 'native-base';
+import { Container, Header,Footer, FooterTab,List, ListItem, Left, Right, Content,
+         Card, CardItem, Icon  } from 'native-base';
 import { Col, Row, Grid } from 'react-native-easy-grid';
 import { setCalcResponse } from '../state/actions/calcActions';
 
@@ -47,12 +46,15 @@ export default class CalcScreen extends React.Component {
     this.props.dispatch(setCalcResponse(null));
   }
   static navigationOptions = {
-    title: 'Tab Split',
+    title: 'Payment split',
+    headerStyle: {
+      backgroundColor: '#561CB3',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
-  openModal(){
-    //this.props.dispatch(addModalBody(<NewPaymentModalBody />))
-    //this.props.dispatch(enterModal())
-  }
   renderCalcSpinner(){
     return(
       <Col size={1} style={{alignSelf:'center',alignItems:'center',justifyContent:'center',paddingTop:200}}>
@@ -62,26 +64,16 @@ export default class CalcScreen extends React.Component {
     )
   }
   renderPaymentRow(paymentObj,i){
-    let swipeBtns = [{
-      text: 'Settled',
-      backgroundColor: '#4b9de5',
-      underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-      onPress:() => {console.log('settle');}
-    }
-    ];
     return(
-      <Swipeout key={i} right={swipeBtns}
-        autoClose={true}
-        backgroundColor= 'transparent'>
+      <CardItem key={i}>
         <TouchableHighlight>
           <View>
             <ListItem>
-              <Text>{paymentObj.name+' pays '+paymentObj.payee+' £'+paymentObj.amount}</Text>
+              <Text style={{color:'#8060ea', fontSize:18}}>{paymentObj.name+' pays '+paymentObj.payee+' £'+paymentObj.amount}</Text>
             </ListItem>
-            <Divider />
           </View>
         </TouchableHighlight>
-      </Swipeout>
+      </CardItem>
     )
   }
   renderCalcMain(){
@@ -89,21 +81,32 @@ export default class CalcScreen extends React.Component {
     let list = (
       <Content>
         <ScrollView>
-          <List>
-            <ListItem itemHeader first>
-              <Text style={{fontSize:20, color:'#4b9de5'}}>Final Payments</Text>
-            </ListItem>
+          <Card>
             {
               apiResponse.map((o,i)=>this.renderPaymentRow(o,i))
             }
-          </List>
+          </Card>
         </ScrollView>
       </Content>
     )
     return(list)
   }
   renderApiError(){
-    return <Text>API ERROR</Text>
+    return <Card>
+            <CardItem>
+              <Text>Wo! What happened there?</Text>
+            </CardItem>
+            <CardItem>
+              <Text>
+                Currently DivvyUp needs an active internet connection to perform the calc so check you're connected and try again!
+              </Text>
+            </CardItem>
+            <CardItem>
+              <Text>
+                An offline version will be developed at a later date...
+              </Text>
+            </CardItem>
+           </Card>
   }
   render() {
     if (this.props.calcApiCalling && !this.props.calcApiResponse){
@@ -117,16 +120,9 @@ export default class CalcScreen extends React.Component {
       <Container>
           <Grid>
             <Col size={5} />
-
-
             <Col size={90} >
-              <Col>
-                {ret}
-              </Col>
-              <Row />
+              {ret}
             </Col>
-
-
             <Col size={5} />
           </Grid>
       </Container>

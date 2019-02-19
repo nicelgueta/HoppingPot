@@ -38,6 +38,16 @@ import { Col, Row, Grid } from 'react-native-easy-grid';
 })
 export default class NewPaymentScreen extends React.Component{
 
+  static navigationOptions = {
+    title: 'Add payment',
+    headerStyle: {
+      backgroundColor: '#561CB3',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
   addPayment(){
     if (this.props.formErrorDesc || this.props.formErrorAmount){
       return(null)
@@ -90,7 +100,7 @@ export default class NewPaymentScreen extends React.Component{
     }
   }
   render(){
-    var Acheck = this.props.formErrorAmount ? 'close-circle' : 'logo-euro'
+    var Acheck = this.props.formErrorAmount ? 'close-circle' : 'keypad'
     var AcheckCol = this.props.formErrorAmount ? 'red' : '#4b9de5'
     var pAmount = (
       <Item
@@ -103,6 +113,7 @@ export default class NewPaymentScreen extends React.Component{
         <Icon name={Acheck} style={{color:AcheckCol}}/>
       </Item>
     )
+    var Dcheck = this.props.formErrorDesc ? 'close-circle' : 'pricetag'
     var DcheckCol = this.props.formErrorDesc ? 'red' : '#4b9de5'
     var pDesc = (
       <Item
@@ -112,7 +123,7 @@ export default class NewPaymentScreen extends React.Component{
         >
         <Input placeholder='Enter payment description'
           onChangeText={(text)=>this.handleDescriptionChange(text)}/>
-        <Icon style={{color:DcheckCol}}/>
+        <Icon name={Dcheck} style={{color:DcheckCol}}/>
       </Item>
     )
     var selectedVal = this.props.paymentName.length > 0 ? this.props.paymentName : null
@@ -142,7 +153,6 @@ export default class NewPaymentScreen extends React.Component{
         <Col size={11/12}>
           <KeyboardAvoidingView behavior="padding" style={{flex:1}}>
           <Col size={5/6}>
-            <Text style={{padding:10,fontSize:20,color:'#4b9de5'}}>Add payment to tab</Text>
               <View style={{padding:10}}>{pName}</View>
               <View style={{padding:10}}>{pDesc}</View>
               <View style={{padding:10}}>{pAmount}</View>

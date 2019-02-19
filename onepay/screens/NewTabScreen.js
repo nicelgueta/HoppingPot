@@ -40,6 +40,13 @@ export default class NewTabScreen extends React.Component {
   }
   static navigationOptions = {
     title: 'Start a new tab',
+    headerStyle: {
+      backgroundColor: '#561CB3',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
   };
   nameTab(name){
     this.props.dispatch(nameTab(name))
@@ -78,7 +85,7 @@ export default class NewTabScreen extends React.Component {
       <TouchableHighlight>
         <View>
           <ListItem title={name} titleStyle={{color:'#8f79b2'}} containerStyle={styles.container}
-          topDivider={true} bottomDivider={true}/>
+          topDivider={false} bottomDivider={true}/>
           <Divider />
         </View>
       </TouchableHighlight>
@@ -103,6 +110,8 @@ export default class NewTabScreen extends React.Component {
       )
   }
   render() {
+    var ppl = (!this.props.newTabName || this.props.newTabName.length < 1) ? null :<Text style={{fontSize:18,color:'#4b9de5'}}>Add people to tab..</Text> ;
+    console.log(ppl)
     return(
       <Container>
         <Grid>
@@ -123,6 +132,7 @@ export default class NewTabScreen extends React.Component {
             <Col size={1/12}/>
             <Col size={10/12}>
               <ScrollView>
+                {ppl}
                 {this.renderList()}
               </ScrollView>
             </Col>
