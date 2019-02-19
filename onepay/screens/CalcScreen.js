@@ -98,7 +98,7 @@ export default class CalcScreen extends React.Component {
             </CardItem>
             <CardItem>
               <Text>
-                Currently DivvyUp needs an active internet connection to perform the calc so check you're connected and try again!
+                Currently HoppingPot needs an active internet connection to perform the calc so check you're connected and try again!
               </Text>
             </CardItem>
             <CardItem>

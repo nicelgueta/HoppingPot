@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "DivvyUp",
-    "slug": "divvyup",
+    "name": "HoppingPot",
+    "slug": "hoppingpot",
     "privacy": "public",
     "sdkVersion": "32.0.0",
     "platforms": [

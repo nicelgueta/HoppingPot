@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
 
-export default class AboutDivvyUp extends Component {
+export default class AboutHoppingPot extends Component {
   static navigationOptions = {
-    title: 'About DivvyUp',
+    title: 'About HoppingPot',
     headerStyle: {
       backgroundColor: '#561CB3',
     },
@@ -23,7 +23,7 @@ export default class AboutDivvyUp extends Component {
             <CardItem>
               <Body>
                 <Text>
-                  DivvyUp was designed to be as simple as possible: a bog standard tool to split payments with your mates
+                  HoppingPot was designed to be as simple as possible: a bog standard tool to split payments with your mates
                   without all the faff that comes along with creating accounts and wading through a plethora of
                   bells and whistles just to do a simple task. The intention is to be more like a calculator than an "app" per se.
                 </Text>
