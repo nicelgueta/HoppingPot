@@ -46,7 +46,7 @@ export default class NewPaymentScreen extends React.Component{
       return(null)
     }
     let date = new Date()
-    let dateStr = (date.getDate() + '/' +  date.getMonth() +'/'+  date.getFullYear())
+    let dateStr = (date.getDate() + '/' +  (date.getMonth()+1) +'/'+  date.getFullYear())
     let payment = {
       name:this.props.paymentName,
       paymentId:date.getTime(),
