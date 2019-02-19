@@ -19,7 +19,7 @@ import { MonoText } from '../components/StyledText';
 import { fetchUser,setUserName } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
-import { deleteTab,saveTab,selectTab } from '../state/actions/tabActions';
+import { deleteTab,saveTab,selectTab,clearPayment } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
 import { postRequest } from '../components/callApi';
 import { callCalcApi,setCalcResponse,setCalcError } from '../state/actions/calcActions';
@@ -44,6 +44,10 @@ export default class MyTabsScreen extends React.Component {
   };
   openModal(bodytype){
     console.log('no modal body set')
+  }
+  componentWillMount(){
+    //need to reset all non-data reducers to allow app to start
+    this.props.dispatch(clearPayment())
   }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
