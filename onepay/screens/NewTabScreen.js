@@ -49,7 +49,10 @@ export default class NewTabScreen extends React.Component {
   }
   postName(name){
     var person = this.props.formName
-    this.props.dispatch(addToOpenTab(person))
+    if (!person || person.length < 1){
+    } else {
+    this.props.dispatch(addToOpenTab(person));
+  }
   }
   saveTab(){
     let tabId = new Date().getTime() //current time as int as the tab id
@@ -109,7 +112,7 @@ export default class NewTabScreen extends React.Component {
               <Form>
                 <Item floatingLabel>
                   <Label style={{color:'#aa99c4'}}>Enter tab name</Label>
-                  <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)}/>
+                  <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)} value={this.props.newTabName}/>
                 </Item>
               </Form>
             </Col>
@@ -134,6 +137,7 @@ export default class NewTabScreen extends React.Component {
                   flex:1,
                   color:'#fff'}}
                   type="solid"
+                  disabled={this.props.newTab.length >= 2 && this.props.newTabName.length > 0 ? false : true}
                   buttonStyle={{
                     borderRadius:5,padding:20,borderColor:'#3ae0a6', alignSelf:'center', backgroundColor:'#3ae0a6'
                   }}

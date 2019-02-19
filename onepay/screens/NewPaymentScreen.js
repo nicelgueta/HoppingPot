@@ -42,7 +42,7 @@ export default class NewPaymentScreen extends React.Component{
     if (this.props.formErrorDesc || this.props.formErrorAmount){
       return(null)
     }
-    if (this.props.paymentAmount.length < 1 || this.props.paymentDescription.length < 1 || this.props.paymentName.length < 1 || this.props.paymentName==='Please select an option...'){
+    if (this.props.paymentAmount.length < 1 || this.props.paymentDescription.length < 1 || this.props.paymentName.length < 1 || this.props.paymentName==='Please select a name...'){
       return(null)
     }
     let date = new Date()
@@ -119,7 +119,7 @@ export default class NewPaymentScreen extends React.Component{
     var selectedVal = this.props.paymentName.length > 0 ? this.props.paymentName : null
     let pName = (
       <Form>
-            <Item picker success={(this.props.paymentName.length >= 1 && this.props.paymentName !== 'Please select an option...')?true:false}>
+            <Item picker success={(this.props.paymentName.length >= 1 && this.props.paymentName !== 'Please select a name...')?true:false}>
               <Picker
                 mode="dropdown"
                 iosIcon={<Icon name="arrow-down" />}
@@ -130,7 +130,7 @@ export default class NewPaymentScreen extends React.Component{
                 selectedValue={selectedVal}
                 onValueChange={(value)=>this.onSelectChange(value)}
               >
-                <Picker.Item label='Please select an option...' value='Please select an option...' />
+                <Picker.Item label='Please select a name...' value='Please select a name...' />
                 {
                   this.props.tabSelected.peopleInTab.map((person,i)=><Picker.Item key={i} label={person} value={person} />)
                 }
@@ -169,7 +169,7 @@ export default class NewPaymentScreen extends React.Component{
                     flex:1,
                     color:'#fff'}}
                     type="solid"
-                    disabled={(this.props.formErrorDesc || this.props.formErrorAmount) || (this.props.paymentAmount.length < 1 || this.props.paymentDescription.length < 1 || this.props.paymentName.length < 1 || this.props.paymentName === 'Please select an option...') ? true:false}
+                    disabled={(this.props.formErrorDesc || this.props.formErrorAmount) || (this.props.paymentAmount.length < 1 || this.props.paymentDescription.length < 1 || this.props.paymentName.length < 1 || this.props.paymentName === 'Please select a name...') ? true:false}
                     buttonStyle={{
                       borderRadius:5,borderColor:'#3ae0a6', alignSelf:'center', backgroundColor:'#3ae0a6'
                     }}

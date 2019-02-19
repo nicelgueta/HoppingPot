@@ -98,7 +98,7 @@ export default class MyTabsScreen extends React.Component {
   }
   sureDelete(tabName,tabId){
     Alert.alert(
-      'Delete tab '+tabName+'?',
+      'Delete '+tabName+'?',
       'Are you sure you want to delete this tab?',
       [
         {
