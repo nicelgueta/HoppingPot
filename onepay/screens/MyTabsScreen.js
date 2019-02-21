@@ -60,7 +60,7 @@ export default class MyTabsScreen extends React.Component {
       </View>
     )
   }}
-  componentWillMount(){
+  componentDidMount(){
     //need to reset all non-data reducers to allow app to start
     this.props.dispatch(clearPayment())
     //check for update
