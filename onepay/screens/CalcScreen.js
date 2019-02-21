@@ -77,11 +77,19 @@ export default class CalcScreen extends React.Component {
     )
   }
   renderCalcMain(){
+    var tabAmount = this.props.tabSelected.tabData.map(o=>o.amount).reduce(sumArray)
+    var meanAmount = Math.round((tabAmount/(this.props.tabSelected.peopleInTab.length))*100)/100;
     let apiResponse = this.props.calcApiResponse;
     let list = (
       <Content>
         <ScrollView>
           <Card>
+            <CardItem header bordered>
+              <Text style={{color:'#26e28e', fontSize:18}}>{'Total: £'+tabAmount}</Text>
+            </CardItem>
+            <CardItem header bordered>
+              <Text style={{color:'#26e28e', fontSize:18}}>{'Everyone pays: £'+meanAmount+' each'}</Text>
+            </CardItem>
             {
               apiResponse.map((o,i)=>this.renderPaymentRow(o,i))
             }
@@ -99,6 +107,7 @@ export default class CalcScreen extends React.Component {
             <CardItem>
               <Text>
                 Currently HoppingPot needs an active internet connection to perform the calc so check you're connected and try again!
+                If you are connected to the internet then we apologise that our server is probably experiencing issues. Please try again later.
               </Text>
             </CardItem>
             <CardItem>

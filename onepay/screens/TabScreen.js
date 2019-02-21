@@ -40,7 +40,12 @@ export default class TabScreen extends React.Component {
   constructor(props){
     super(props)
   }
-  static navigationOptions = {
+  static navigationOptions = ({ navigation }) => {
+    var calcFunc = navigation.getParam('calcFunc');
+    var tabId = navigation.getParam('tabId');
+    var comp = navigation.getParam('comp');
+    console.log(tabId)
+    return {
     title: 'View Tab',
     headerStyle: {
       backgroundColor: '#561CB3',
@@ -49,10 +54,29 @@ export default class TabScreen extends React.Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-  };
+    headerRight:(
+      <View style={{paddingRight:10}}>
+        <Button titleStyle={{
+            flex:1,
+            color:'#fff'}}
+            type="solid"
+            buttonStyle={{
+              borderRadius:5,borderColor:'#8060ea', alignSelf:'center', backgroundColor:'#8060ea'
+            }}
+            title="Calculate"
+            onPress={()=>calcFunc(comp,tabId)}
+            >
+        </Button>
+    </View>
+    )
+  }};
+  componentDidMount() {
+    this.props.navigation.setParams({ tabId: this.props.tabSelected.tabId, calcFunc: this.calc,comp:this });
+  }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
   }
+
   selectTab(tabId){
     this.props.dispatch(selectTab(tabId))
     this.props.navigation.navigate('SelectedTab')
@@ -64,26 +88,26 @@ export default class TabScreen extends React.Component {
     //need to reset all non-data reducers to allow app to start
     this.props.dispatch(clearPayment())
   }
-  getCalc(tabId){
-    let url = 'https://payonesplit.herokuapp.com/calc';
-    let tab = this.props.myTabs.filter(o=>o.tabId===tabId)[0];
+  __getCalc(comp,tabId){
+    let url = 'https://botsorted.herokuapp.com/calc';
+    let tab = comp.props.myTabs.filter(o=>o.tabId===tabId)[0];
     let postData = {};
     for (let i=0; i < tab.peopleInTab.length;i++){
       console.log('LOGGING i');
       let person = tab.peopleInTab[i];
-      let amount = this.getTotalPaidAmount(person,tab.tabData)
+      let amount = comp.getTotalPaidAmount(person,tab.tabData)
       postData[person] = amount;
     }
 
     console.log('POSTDATA: '+JSON.stringify(postData))
 
     let responseHandleFunc = (response) => {
-      this.props.dispatch(setCalcResponse(response.data))
+      comp.props.dispatch(setCalcResponse(response.data))
     }
     let errorHandleFunc = (e) => {
-      this.props.dispatch(setCalcError(e))
+      comp.props.dispatch(setCalcError(e))
     }
-    this.props.dispatch(callCalcApi()) //calling api
+    comp.props.dispatch(callCalcApi()) //calling api
     console.log('calling API')
     axios.post(url,postData)
       .then(function (response) {
@@ -95,9 +119,9 @@ export default class TabScreen extends React.Component {
         errorHandleFunc(error)
       });
   }
-  validCalc(tabId){
+  __validCalc(comp,tabId){
     console.log('valdaiting tab '+tabId)
-    let tab = this.props.myTabs.filter(o=>o.tabId===tabId)[0];
+    let tab = comp.props.myTabs.filter(o=>o.tabId===tabId)[0];
     if (tab.tabData.length === 0){
       var tabAmount = 0;
     } else {
@@ -105,14 +129,14 @@ export default class TabScreen extends React.Component {
     }
     if (tabAmount > 0){return true} else {return false};
   }
-  calc(tabId){
+  calc(comp,tabId){
     console.log('this.calc called')
-    if (!this.validCalc(tabId)){
+    if (!comp.__validCalc(comp,tabId)){
       return (Alert.alert("Oi oi Saveloy!","You can't calculate an empty tab! Try adding a payment first, then press the magic button.."))
     }
-    this.props.dispatch(selectTab(tabId));
-    this.props.navigation.navigate('Calc');
-    this.getCalc(tabId)
+    comp.props.dispatch(selectTab(tabId));
+    comp.props.navigation.navigate('Calc');
+    comp.__getCalc(comp,tabId)
   }
   removePayment(paymentId){
     let paymentArr = this.props.tabSelected.tabData
@@ -186,24 +210,10 @@ export default class TabScreen extends React.Component {
           <View style={{flex:1}}>
             <View style={{flex:0.05,flexDirection:'row'}}>
               <View style={{flex:1}}>
-                <Text style={{fontSize:24,color:'#561CB3'}}>{this.props.tabSelected.tabName+'   |   £'+totalForTab}</Text>
-              </View>
-              <View style={{flex:0.5,alignItems:'center'}}>
-                <Button titleStyle={{
-                    flex:1,
-                    color:'#fff'}}
-                    type="solid"
-                    buttonStyle={{
-                      borderRadius:5,borderColor:'#8060ea', alignSelf:'center', backgroundColor:'#8060ea'
-                    }}
-                    title="Calculate"
-                    onPress={()=>this.calc(this.props.tabSelected.tabId)}
-                    >
-                </Button>
+                <Text style={{fontSize:20,color:'#561CB3'}}>{this.props.tabSelected.tabName+'   |   £'+totalForTab}</Text>
               </View>
             </View>
-            <View style={{flex:0.10}} />
-            <Divider />
+            <View style={{flex:0.1}} />
             <View style={{flex:0.5}}>
               <View style={{flex:0.25}}>
                 <Text style={{fontSize:20,color:'#4b9de5'}}>People in tab</Text>

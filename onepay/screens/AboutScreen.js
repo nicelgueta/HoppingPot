@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { Container, Header, Content, Card, CardItem, Text, Body } from 'native-base';
+import { Container, Header, Content, Card, CardItem, Text, Body, Left, Right } from 'native-base';
+import APP_JSON from '../app.json';
+
+const APP_VERSION = APP_JSON.expo.version;
 
 export default class AboutHoppingPot extends Component {
   static navigationOptions = {
@@ -48,6 +51,7 @@ export default class AboutHoppingPot extends Component {
             </CardItem>
             <CardItem footer>
               <Text>Nicelgueta - Feb 2019</Text>
+              <Right><Text style={{fontSize:10}}>{'V'+APP_VERSION}</Text></Right>
             </CardItem>
          </Card>
         </Content>

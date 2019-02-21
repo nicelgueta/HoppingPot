@@ -14,33 +14,38 @@ import {
 } from 'react-native';
 import { WebBrowser } from 'expo';
 import { Input,Button,Divider,ListItem } from 'react-native-elements';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import { MonoText } from '../components/StyledText';
-import { fetchUser,setUserName } from "../state/actions/userActions"
+import { fetchUser,setUserName,setUpdateRequired } from "../state/actions/userActions"
 import { connect } from "react-redux"
 import { enterModal,clearModal,addModalBody } from '../state/actions/modalActions';
 import { deleteTab,saveTab,selectTab,clearPayment } from '../state/actions/tabActions';
 import Swipeout from 'react-native-swipeout';
 import { postRequest } from '../components/callApi';
 import { callCalcApi,setCalcResponse,setCalcError } from '../state/actions/calcActions';
+import { Icon } from 'native-base';
+import APP_JSON from '../app.json';
 
 const sumArray = (accumulator, currentValue) => {return accumulator + currentValue};
 const axios = require('axios');
+
+const APP_VERSION = APP_JSON.expo.version;
 
 @connect((store) => {
   return {
     user: store.user.user,
     myTabs: store.tabs.myTabs,
     modalBody:store.modal.modalBody,
-    tabSelected:store.tabs.tabSelected
+    tabSelected:store.tabs.tabSelected,
+    update:store.user.updateRequired
   };
 })
 export default class MyTabsScreen extends React.Component {
   constructor(props){
     super(props)
   }
-  static navigationOptions = {
-    title: 'My Tabs',
+  static navigationOptions = ({ navigation }) => {
+    return {
+    title: 'My tabs',
     headerStyle: {
       backgroundColor: '#561CB3',
     },
@@ -48,13 +53,29 @@ export default class MyTabsScreen extends React.Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
-  };
-  openModal(bodytype){
-    console.log('no modal body set')
-  }
+    headerRight:(
+      <View style={{paddingRight:10}}>
+        <Button icon={<Icon name="information-circle" style={{color:'#7aadf9'}} />}
+          onPress={()=>navigation.navigate('About')} type="clear"/>
+      </View>
+    )
+  }}
   componentWillMount(){
     //need to reset all non-data reducers to allow app to start
     this.props.dispatch(clearPayment())
+    //check for update
+    axios.get('https://botsorted.herokuapp.com/sys/update/'+APP_VERSION)
+      .then(function (response) {
+        // handle success
+        var update = response.data.update;
+        if (update === 'Y'){
+          Alert.alert('Update this App!',"There is an update available for this app. It's recommended to download the new version as this older version will eventually stop working...")
+        }
+      })
+      .catch(function (error) {
+        // handle error
+        Alert.alert('Just a note!',"We couldn't detect an internet connection. No worries if you're just totting up payments, but currently the calc won't work if you're not connected.")
+      });
   }
   deleteTab(tabId){
     this.props.dispatch(deleteTab(tabId))
@@ -67,7 +88,7 @@ export default class MyTabsScreen extends React.Component {
     return tabData.map(o=>{if (o.name===person){return o.amount}else{return 0}}).reduce(sumArray);
   }
   getCalc(tabId){
-    let url = 'https://payonesplit.herokuapp.com/calc';
+    let url = 'https://botsorted.herokuapp.com/calc';
     let tab = this.props.myTabs.filter(o=>o.tabId===tabId)[0];
     let postData = {};
     for (let i=0; i < tab.peopleInTab.length;i++){
@@ -200,10 +221,8 @@ export default class MyTabsScreen extends React.Component {
 };
 const LEFTICON = (
   <Icon
-    name='money'
-    color='white'
-    size={20}
-    shake={true}
+    name='people'
+    style={{color:'#561CB3'}}
   />
 )
 const styles = StyleSheet.create({

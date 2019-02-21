@@ -8,6 +8,7 @@ export default function reducer(state={
     fetching: false,
     fetched: false,
     error: null,
+    updateRequired:false,
   }, action) {
 
     switch (action.type) {
@@ -35,6 +36,12 @@ export default function reducer(state={
         return {
           ...state,
           user: {...state.user, age: action.payload},
+        }
+      }
+      case "SET_UPDATE_REQUIRED": {
+        return {
+          ...state,
+          user: {...state.user, updateRequired: action.payload},
         }
       }
     }

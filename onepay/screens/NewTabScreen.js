@@ -94,7 +94,7 @@ export default class NewTabScreen extends React.Component {
   renderList(){
       let listItems = this.props.newTab.map((name,i)=>{return(this.renderListItem(name,i))})
       let text = (<Item key={1}>
-                    <Input placeholder='Start typing a name...' onChangeText={(text)=>this.handleName(text)}
+                    <Input maxLength={20} placeholder='Start typing a name...' onChangeText={(text)=>this.handleName(text)}
                       onBlur={(text)=>this.postName(text)}  value={this.props.formName} placeholderTextColor={'#aa99c4'}
                       style={{color:'#aa99c4'}}/>
                   </Item>)
@@ -121,7 +121,7 @@ export default class NewTabScreen extends React.Component {
               <Form>
                 <Item floatingLabel>
                   <Label style={{color:'#aa99c4'}}>Enter tab name</Label>
-                  <Input style={{color:'#8f79b2',fontSize:20}} onChangeText={(text)=>this.nameTab(text)} value={this.props.newTabName}/>
+                  <Input style={{color:'#8f79b2',fontSize:20}} maxLength={30} onChangeText={(text)=>this.nameTab(text)} value={this.props.newTabName}/>
                 </Item>
               </Form>
             </Col>

@@ -22,3 +22,10 @@ export function setUserAge(age) {
     payload: age,
   }
 }
+
+export function setUpdateRequired(bool) {
+  return {
+    type: 'SET_UPDATE_REQUIRED',
+    payload: bool,
+  }
+}

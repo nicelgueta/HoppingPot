@@ -17,12 +17,13 @@ const HomeStack = createStackNavigator({
   NewTab: NewTabScreen,
   SelectedTab:TabScreen,
   Calc:CalcScreen,
-  NewPayment:NewPaymentScreen
+  NewPayment:NewPaymentScreen,
+  About: AboutScreen,
 });
 
 HomeStack.navigationOptions = {
   tabBarLabel: 'My Tabs',
-  tabBarVisible:true,
+  tabBarVisible:false,
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -76,5 +77,4 @@ const BottomTabNavigatorConfig = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  AboutStack,
 },BottomTabNavigatorConfig);
