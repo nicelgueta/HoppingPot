@@ -26,7 +26,7 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.divvy.DivvyUp"
+      "package": "com.hoppingpot.HoppingPot"
     }
   }
 }
