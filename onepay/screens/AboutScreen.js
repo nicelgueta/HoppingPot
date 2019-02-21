@@ -49,8 +49,15 @@ export default class AboutHoppingPot extends Component {
                 </Text>
               </Body>
             </CardItem>
+            <CardItem>
+              <Body>
+                <Text style={{fontSize:14}}>
+                  Logo design attributed to Eucalyp from Flaticon.com
+                </Text>
+              </Body>
+            </CardItem>
             <CardItem footer>
-              <Text>Nicelgueta - Feb 2019</Text>
+              <Text>Nicelgueta Feb 2019</Text>
               <Right><Text style={{fontSize:10}}>{'V'+APP_VERSION}</Text></Right>
             </CardItem>
          </Card>

@@ -102,7 +102,7 @@ export default class CalcScreen extends React.Component {
   renderApiError(){
     return <Card>
             <CardItem>
-              <Text>Wo! What happened there?</Text>
+              <Text>Sorry - that wasn't supposed to happen!</Text>
             </CardItem>
             <CardItem>
               <Text>
